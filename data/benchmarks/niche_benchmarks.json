@@ -1,0 +1,62 @@
+[
+  {
+    "primary_niche":"Tech & Gadgets",
+    "benchmark_engagement_rate":2.85,
+    "benchmark_cpm_inr":280.0,
+    "niche_market_demand":"High"
+  },
+  {
+    "primary_niche":"Fashion & Lifestyle",
+    "benchmark_engagement_rate":3.2,
+    "benchmark_cpm_inr":240.0,
+    "niche_market_demand":"Very High"
+  },
+  {
+    "primary_niche":"Fitness & Health",
+    "benchmark_engagement_rate":4.1,
+    "benchmark_cpm_inr":290.0,
+    "niche_market_demand":"High"
+  },
+  {
+    "primary_niche":"Food & Culinary",
+    "benchmark_engagement_rate":3.85,
+    "benchmark_cpm_inr":220.0,
+    "niche_market_demand":"High"
+  },
+  {
+    "primary_niche":"Travel & Adventure",
+    "benchmark_engagement_rate":3.6,
+    "benchmark_cpm_inr":260.0,
+    "niche_market_demand":"Medium"
+  },
+  {
+    "primary_niche":"Beauty & Skincare",
+    "benchmark_engagement_rate":3.45,
+    "benchmark_cpm_inr":270.0,
+    "niche_market_demand":"Very High"
+  },
+  {
+    "primary_niche":"Finance & Business",
+    "benchmark_engagement_rate":2.2,
+    "benchmark_cpm_inr":420.0,
+    "niche_market_demand":"Very High"
+  },
+  {
+    "primary_niche":"Gaming & Esports",
+    "benchmark_engagement_rate":4.5,
+    "benchmark_cpm_inr":190.0,
+    "niche_market_demand":"High"
+  },
+  {
+    "primary_niche":"Education & Career",
+    "benchmark_engagement_rate":2.5,
+    "benchmark_cpm_inr":310.0,
+    "niche_market_demand":"Medium"
+  },
+  {
+    "primary_niche":"Parenting & Family",
+    "benchmark_engagement_rate":3.35,
+    "benchmark_cpm_inr":250.0,
+    "niche_market_demand":"Medium"
+  }
+]

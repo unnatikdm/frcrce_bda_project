@@ -1,0 +1,108 @@
+{
+  "timestamp": "2026-10-21 21:10:34",
+  "spark_scaling_benchmarks": [
+    {
+      "dataset_size": 500,
+      "ingest_seconds": 1.143,
+      "cleaning_seconds": 8.559,
+      "features_seconds": 0.561,
+      "action_seconds": 1.576,
+      "total_etl_seconds": 11.839,
+      "throughput_records_per_sec": 42.2,
+      "clean_records_count": 497
+    },
+    {
+      "dataset_size": 1500,
+      "ingest_seconds": 0.069,
+      "cleaning_seconds": 1.629,
+      "features_seconds": 0.409,
+      "action_seconds": 0.591,
+      "total_etl_seconds": 2.698,
+      "throughput_records_per_sec": 555.9,
+      "clean_records_count": 1493
+    },
+    {
+      "dataset_size": 3000,
+      "ingest_seconds": 0.089,
+      "cleaning_seconds": 1.588,
+      "features_seconds": 0.381,
+      "action_seconds": 0.515,
+      "total_etl_seconds": 2.572,
+      "throughput_records_per_sec": 1166.2,
+      "clean_records_count": 2985
+    }
+  ],
+  "spark_caching_performance": {
+    "lazy_definition_seconds": 0.032808,
+    "uncached_action_seconds": 0.7469,
+    "cache_materialization_seconds": 1.0872,
+    "cached_action_seconds": 0.3562,
+    "cache_speedup_factor": 2.1
+  },
+  "recommendation_quality": {
+    "overall_niche_precision_pct": 80.0,
+    "overall_budget_compliance_pct": 84.0,
+    "scenarios_evaluated": [
+      {
+        "scenario_name": "Tech Startup Seed Launch",
+        "target_niche": "Tech & Gadgets",
+        "budget_inr": 45000.0,
+        "matches_returned": 5,
+        "is_exact_match": true,
+        "average_recommendation_score": 95.64,
+        "average_engagement_rate": 4.83,
+        "budget_compliance_rate_pct": 100.0,
+        "niche_precision_pct": 100.0,
+        "average_budget_utilization_pct": 34.7
+      },
+      {
+        "scenario_name": "Luxury Ethnic Fashion Campaign",
+        "target_niche": "Fashion & Lifestyle",
+        "budget_inr": 120000.0,
+        "matches_returned": 5,
+        "is_exact_match": false,
+        "average_recommendation_score": 55.66,
+        "average_engagement_rate": 4.34,
+        "budget_compliance_rate_pct": 20.0,
+        "niche_precision_pct": 0.0,
+        "average_budget_utilization_pct": 286.3
+      },
+      {
+        "scenario_name": "Fitness & Whey Protein Push",
+        "target_niche": "Fitness & Health",
+        "budget_inr": 35000.0,
+        "matches_returned": 5,
+        "is_exact_match": true,
+        "average_recommendation_score": 94.86,
+        "average_engagement_rate": 5.64,
+        "budget_compliance_rate_pct": 100.0,
+        "niche_precision_pct": 100.0,
+        "average_budget_utilization_pct": 35.7
+      },
+      {
+        "scenario_name": "Cloud Kitchen Brand Expansion",
+        "target_niche": "Food & Culinary",
+        "budget_inr": 75000.0,
+        "matches_returned": 5,
+        "is_exact_match": true,
+        "average_recommendation_score": 86.62,
+        "average_engagement_rate": 5.98,
+        "budget_compliance_rate_pct": 100.0,
+        "niche_precision_pct": 100.0,
+        "average_budget_utilization_pct": 13.5
+      },
+      {
+        "scenario_name": "Gaming Streamer Sponsorship",
+        "target_niche": "Gaming & Esports",
+        "budget_inr": 50000.0,
+        "matches_returned": 5,
+        "is_exact_match": true,
+        "average_recommendation_score": 76.08,
+        "average_engagement_rate": 6.24,
+        "budget_compliance_rate_pct": 100.0,
+        "niche_precision_pct": 100.0,
+        "average_budget_utilization_pct": 18.4
+      }
+    ]
+  }
+}
