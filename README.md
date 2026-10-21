@@ -312,3 +312,34 @@ Open your browser to `http://localhost:8501`.
 1. **Synthetic Data Disclosure:** All influencer records, handles, follower counts, and metric numbers are generated synthetically using fixed random seeds for academic reproducibility. No private personal data or Instagram credentials were used or scraped.
 2. **Price Estimates Disclaimer:** Estimated sponsorship costs are modeled using Indian market industry CPM benchmarks (~₹150 to ₹450 per 1,000 followers adjusted for engagement rate). Actual creator rates vary depending on exclusivity, production value, and agency representation.
 3. **Single-Node Execution:** Spark executes in `local[*]` mode on a single laptop to demonstrate architectural concepts without requiring multi-node cloud clusters.
+
+---
+
+## 12. Public Cloud Deployment Guide
+
+The repository includes pre-configured deployment manifests for both **Streamlit Community Cloud** and **Render** (via Docker).
+
+### Option A: Streamlit Community Cloud (Recommended · 100% Free · 1-Click)
+Streamlit Community Cloud natively supports Streamlit applications with stateful WebSockets, free hosting, and automatic rebuilds on `git push`.
+
+1. Go to [share.streamlit.io](https://share.streamlit.io) and click **Sign in with GitHub**.
+2. Click **New app**.
+3. Configure the three fields:
+   - **Repository:** `unnatikdm/frcrce_bda_project`
+   - **Branch:** `main`
+   - **Main file path:** `app.py`
+4. Click **Deploy!**
+> **Note:** The included `packages.txt` automatically installs `default-jre-headless` so PySpark initializes cleanly in the cloud container.
+
+---
+
+### Option B: Render Deployment (Free Web Service via Docker)
+Render supports custom container deployments via the included `Dockerfile` and `render.yaml`.
+
+1. Go to [dashboard.render.com](https://dashboard.render.com) and sign in.
+2. Click **New +** > **Web Service**.
+3. Connect your GitHub repository: `https://github.com/unnatikdm/frcrce_bda_project`.
+4. Choose **Docker** as the runtime (Render will automatically detect `Dockerfile`).
+5. Select the **Free** instance tier.
+6. Click **Create Web Service**.
+7. Render will build the image with Java + Python 3.11, launch Streamlit, and generate your public HTTPS URL (e.g., `https://influenceiq.onrender.com`).
