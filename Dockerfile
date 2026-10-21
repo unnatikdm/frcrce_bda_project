@@ -21,5 +21,5 @@ COPY . .
 # Expose standard Streamlit port
 EXPOSE 8501
 
-# Run Streamlit on container startup
-ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0", "--server.enableCORS=false", "--server.enableXsrfProtection=false"]
+# Run Streamlit on container startup (respecting dynamic cloud PORT variable if provided)
+CMD ["sh", "-c", "streamlit run app.py --server.port=${PORT:-8501} --server.address=0.0.0.0 --server.enableCORS=false --server.enableXsrfProtection=false"]
