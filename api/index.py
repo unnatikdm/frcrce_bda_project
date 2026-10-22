@@ -146,6 +146,7 @@ class TokenVerifyRequest(BaseModel):
 
 
 @app.get("/api/health")
+@app.get("/health")
 def health_check():
     df = load_dataset()
     return {
@@ -158,6 +159,7 @@ def health_check():
 
 
 @app.get("/api/benchmarks")
+@app.get("/benchmarks")
 def get_benchmarks():
     return {
         "benchmarks": load_benchmarks(),
@@ -166,6 +168,7 @@ def get_benchmarks():
 
 
 @app.get("/api/creators")
+@app.get("/creators")
 def get_creators(
     niche: Optional[str] = "All",
     city: Optional[str] = "All",
@@ -199,6 +202,7 @@ def get_creators(
 
 
 @app.post("/api/recommend")
+@app.post("/recommend")
 def recommend(req: RecommendRequest):
     df = load_dataset()
 
@@ -231,6 +235,7 @@ def recommend(req: RecommendRequest):
 
 
 @app.post("/api/verify_token")
+@app.post("/verify_token")
 def verify_token(req: TokenVerifyRequest):
     token = req.access_token.strip()
     if not token:

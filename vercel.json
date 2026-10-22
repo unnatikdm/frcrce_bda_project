@@ -1,19 +1,26 @@
 {
-  "version": 2,
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "app": {
+      "root": "public"
+    },
+    "api": {
+      "root": "api",
+      "framework": "fastapi"
+    }
+  },
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/api/index.py"
-    }
-  ],
-  "headers": [
+      "destination": {
+        "service": "api"
+      }
+    },
     {
       "source": "/(.*)",
-      "headers": [
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Access-Control-Allow-Origin", "value": "*" }
-      ]
+      "destination": {
+        "service": "app"
+      }
     }
   ]
 }
