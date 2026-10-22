@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InfluenceIQ | Big Data Influencer Recommender</title>
+    <meta name="description" content="AI-driven Instagram influencer recommendation platform for businesses powered by Apache Spark, Spark SQL, Parquet, and Meta Graph API.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Top Header -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="brand">
+                <div class="brand-icon">✨</div>
+                <div>
+                    <h1 class="brand-title">InfluenceIQ</h1>
+                    <p class="brand-tagline">Big Data Influencer Recommender · PySpark & Meta Graph API</p>
+                </div>
+            </div>
+            <div class="header-badges">
+                <span class="badge badge-spark">⚡ PySpark 3.5</span>
+                <span class="badge badge-sql">📊 Spark SQL</span>
+                <span class="badge badge-parquet">📦 Parquet Partitioned</span>
+                <span class="badge badge-api">🔐 Meta Graph API</span>
+                <a href="https://github.com/unnatikdm/frcrce_bda_project" target="_blank" rel="noopener noreferrer" class="btn btn-github">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                    <span>GitHub</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-tab="tab-recommender">
+                <span class="tab-icon">🎯</span> Recommender Engine
+            </button>
+            <button class="nav-tab" data-tab="tab-compare">
+                <span class="tab-icon">⚖️</span> Compare Creators <span class="compare-badge" id="compare-count">0</span>
+            </button>
+            <button class="nav-tab" data-tab="tab-spark">
+                <span class="tab-icon">⚡</span> Big Data & Spark SQL
+            </button>
+            <button class="nav-tab" data-tab="tab-api">
+                <span class="tab-icon">🔐</span> Meta Graph API Tester
+            </button>
+            <button class="nav-tab" data-tab="tab-dataset">
+                <span class="tab-icon">📊</span> Dataset Explorer (2,495)
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Container -->
+    <main class="app-main">
+        <!-- ================= TAB 1: RECOMMENDER ================= -->
+        <section id="tab-recommender" class="tab-content active">
+            <!-- Fast Presets Bar -->
+            <div class="presets-container">
+                <span class="presets-label">⚡ 1-Click Campaign Presets:</span>
+                <div class="preset-buttons">
+                    <button class="btn btn-preset active" data-preset="mumbai_skincare">
+                        🌿 Mumbai Skincare (₹20K)
+                    </button>
+                    <button class="btn btn-preset" data-preset="tech_saas">
+                        💻 Bengaluru SaaS Launch (₹45K)
+                    </button>
+                    <button class="btn btn-preset" data-preset="delhi_fashion">
+                        👗 Delhi Luxury Fashion (₹1.2L)
+                    </button>
+                    <button class="btn btn-preset" data-preset="gaming_esports">
+                        🎮 Gaming Streamers (₹50K)
+                    </button>
+                    <button class="btn btn-preset" data-preset="fitness_whey">
+                        🏋️ Fitness & Health (₹35K)
+                    </button>
+                </div>
+            </div>
+
+            <div class="recommender-grid">
+                <!-- Left Sidebar: Controls -->
+                <aside class="controls-panel card">
+                    <div class="panel-header">
+                        <h2>🎯 Campaign Parameters</h2>
+                        <span class="badge badge-accent">Interactive</span>
+                    </div>
+
+                    <form id="campaign-form" class="campaign-form">
+                        <div class="form-group">
+                            <label for="niche-select">Target Industry Niche</label>
+                            <select id="niche-select" class="form-select">
+                                <option value="All">All Niches</option>
+                                <option value="Beauty & Skincare" selected>Beauty & Skincare</option>
+                                <option value="Fashion & Lifestyle">Fashion & Lifestyle</option>
+                                <option value="Tech & Gadgets">Tech & Gadgets</option>
+                                <option value="Fitness & Health">Fitness & Health</option>
+                                <option value="Food & Culinary">Food & Culinary</option>
+                                <option value="Gaming & Esports">Gaming & Esports</option>
+                                <option value="Finance & Business">Finance & Business</option>
+                                <option value="Education & Career">Education & Career</option>
+                                <option value="Travel & Adventure">Travel & Adventure</option>
+                                <option value="Parenting & Family">Parenting & Family</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="range-header">
+                                <label for="budget-slider">Campaign Budget (₹)</label>
+                                <span class="range-val" id="budget-val">₹20,000</span>
+                            </div>
+                            <input type="range" id="budget-slider" min="5000" max="250000" step="2500" value="20000" class="slider">
+                            <div class="slider-marks">
+                                <span>₹5K</span>
+                                <span>₹50K</span>
+                                <span>₹150K</span>
+                                <span>₹250K</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="city-select">Target City Location</label>
+                            <select id="city-select" class="form-select">
+                                <option value="All">Any / Pan-India</option>
+                                <option value="Mumbai" selected>Mumbai</option>
+                                <option value="Delhi NCR">Delhi NCR</option>
+                                <option value="Bengaluru">Bengaluru</option>
+                                <option value="Hyderabad">Hyderabad</option>
+                                <option value="Pune">Pune</option>
+                                <option value="Chennai">Chennai</option>
+                                <option value="Kolkata">Kolkata</option>
+                                <option value="Jaipur">Jaipur</option>
+                                <option value="Ahmedabad">Ahmedabad</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <div class="range-header">
+                                    <label for="min-er-slider">Min ER (%)</label>
+                                    <span class="range-val" id="min-er-val">2.0%</span>
+                                </div>
+                                <input type="range" id="min-er-slider" min="0.5" max="7.0" step="0.1" value="2.0" class="slider">
+                            </div>
+                            <div class="form-group half">
+                                <div class="range-header">
+                                    <label for="min-followers-slider">Min Followers</label>
+                                    <span class="range-val" id="min-followers-val">5K</span>
+                                </div>
+                                <input type="range" id="min-followers-slider" min="1000" max="100000" step="2000" value="5000" class="slider">
+                            </div>
+                        </div>
+
+                        <!-- Weights Accordion -->
+                        <details class="weights-details">
+                            <summary class="weights-summary">
+                                <span>⚙️ Customize Multi-Criteria Weights</span>
+                                <span class="weights-pct" id="weights-total-badge">100%</span>
+                            </summary>
+                            <div class="weights-body">
+                                <div class="weight-item">
+                                    <div class="range-header">
+                                        <span>Niche Relevance (30%)</span>
+                                        <span id="w-niche-val">0.30</span>
+                                    </div>
+                                    <input type="range" id="w-niche" min="0.05" max="0.60" step="0.05" value="0.30" class="slider-sm">
+                                </div>
+                                <div class="weight-item">
+                                    <div class="range-header">
+                                        <span>Engagement Quality (25%)</span>
+                                        <span id="w-eng-val">0.25</span>
+                                    </div>
+                                    <input type="range" id="w-eng" min="0.05" max="0.60" step="0.05" value="0.25" class="slider-sm">
+                                </div>
+                                <div class="weight-item">
+                                    <div class="range-header">
+                                        <span>Budget Fit (20%)</span>
+                                        <span id="w-budget-val">0.20</span>
+                                    </div>
+                                    <input type="range" id="w-budget" min="0.05" max="0.60" step="0.05" value="0.20" class="slider-sm">
+                                </div>
+                                <div class="weight-item">
+                                    <div class="range-header">
+                                        <span>Location Match (15%)</span>
+                                        <span id="w-loc-val">0.15</span>
+                                    </div>
+                                    <input type="range" id="w-loc" min="0.05" max="0.60" step="0.05" value="0.15" class="slider-sm">
+                                </div>
+                                <div class="weight-item">
+                                    <div class="range-header">
+                                        <span>Audience Reach (10%)</span>
+                                        <span id="w-reach-val">0.10</span>
+                                    </div>
+                                    <input type="range" id="w-reach" min="0.05" max="0.60" step="0.05" value="0.10" class="slider-sm">
+                                </div>
+                            </div>
+                        </details>
+
+                        <button type="submit" class="btn btn-primary btn-block" id="btn-run-recommend">
+                            <span class="btn-icon">⚡</span> Run Recommender
+                        </button>
+                    </form>
+                </aside>
+
+                <!-- Right Area: Results -->
+                <div class="results-container">
+                    <!-- Status Banner -->
+                    <div class="status-banner card" id="results-status">
+                        <div class="status-left">
+                            <span class="status-dot"></span>
+                            <span class="status-text" id="status-message">Loading verified influencer recommendations...</span>
+                        </div>
+                        <div class="status-metrics">
+                            <div class="stat-pill">
+                                <span class="stat-lbl">Matches</span>
+                                <strong id="stat-matches">0</strong>
+                            </div>
+                            <div class="stat-pill">
+                                <span class="stat-lbl">Avg Match</span>
+                                <strong id="stat-avg-score">0%</strong>
+                            </div>
+                            <div class="stat-pill">
+                                <span class="stat-lbl">Budget Compliance</span>
+                                <strong id="stat-budget-rate">100%</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cards Grid -->
+                    <div class="recommendations-grid" id="recommendations-list">
+                        <!-- Influencer cards dynamically injected here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 2: COMPARE CREATORS ================= -->
+        <section id="tab-compare" class="tab-content">
+            <div class="card compare-container">
+                <div class="compare-header">
+                    <div>
+                        <h2>⚖️ Creator Comparison Matrix</h2>
+                        <p class="text-muted">Compare side-by-side performance metrics, pricing, and audience demographics.</p>
+                    </div>
+                    <div class="compare-actions">
+                        <button class="btn btn-outline" id="btn-clear-compare">Clear Selection</button>
+                        <button class="btn btn-primary" id="btn-export-compare">Export Comparison CSV</button>
+                    </div>
+                </div>
+
+                <div id="compare-empty-state" class="empty-state">
+                    <div class="empty-icon">📌</div>
+                    <h3>No creators selected for comparison yet</h3>
+                    <p>Go to the <strong>Recommender Engine</strong> tab and check the <strong>"Compare"</strong> checkbox on any creator card.</p>
+                </div>
+
+                <div id="compare-table-wrapper" class="table-responsive hidden">
+                    <table class="data-table" id="compare-table">
+                        <thead>
+                            <tr id="compare-table-head">
+                                <th>Metric</th>
+                            </tr>
+                        </thead>
+                        <tbody id="compare-table-body">
+                            <!-- Injected dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Aggregate Campaign Summary -->
+                <div id="compare-summary-card" class="campaign-summary-card hidden">
+                    <h3>📊 Combined Campaign Projection (If Booking All Selected)</h3>
+                    <div class="summary-metrics-grid">
+                        <div class="metric-card">
+                            <span class="metric-label">Total Cost</span>
+                            <span class="metric-value text-emerald" id="sum-cost">₹0</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-label">Total Combined Followers</span>
+                            <span class="metric-value text-indigo" id="sum-reach">0</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-label">Avg Engagement Rate</span>
+                            <span class="metric-value text-amber" id="sum-er">0%</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-label">Blended Cost / Engagement</span>
+                            <span class="metric-value text-cyan" id="sum-cpe">₹0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 3: SPARK & BIG DATA ENGINE ================= -->
+        <section id="tab-spark" class="tab-content">
+            <div class="spark-grid">
+                <!-- Pipeline Architecture Flowchart -->
+                <div class="card pipeline-card">
+                    <h2>⚡ InfluenceIQ Big Data Architecture</h2>
+                    <p class="text-muted">Enterprise Apache Spark 3.5 batch processing pipeline utilizing columnar Parquet storage and Spark SQL.</p>
+                    
+                    <div class="flowchart-container">
+                        <div class="flow-step">
+                            <div class="flow-icon">📥</div>
+                            <div class="flow-title">1. Raw Ingestion</div>
+                            <div class="flow-desc">CSV & JSON Creator Logs<br><code>5,000+ Raw Profiles</code></div>
+                        </div>
+                        <div class="flow-arrow">➔</div>
+                        <div class="flow-step">
+                            <div class="flow-icon">🧹</div>
+                            <div class="flow-title">2. Spark Cleaning</div>
+                            <div class="flow-desc">Deduplication, NULL Imputation,<br>Niche Canonicalization</div>
+                        </div>
+                        <div class="flow-arrow">➔</div>
+                        <div class="flow-step">
+                            <div class="flow-icon">🧪</div>
+                            <div class="flow-title">3. Feature Eng.</div>
+                            <div class="flow-desc">ER%, CPE, CPM, Tiering,<br>Broadcast Benchmark Join</div>
+                        </div>
+                        <div class="flow-arrow">➔</div>
+                        <div class="flow-step">
+                            <div class="flow-icon">📦</div>
+                            <div class="flow-title">4. Parquet Store</div>
+                            <div class="flow-desc">Partitioned by Niche<br>Snappy Compression</div>
+                        </div>
+                        <div class="flow-arrow">➔</div>
+                        <div class="flow-step highlight">
+                            <div class="flow-icon">🎯</div>
+                            <div class="flow-title">5. Recommender</div>
+                            <div class="flow-desc">5-Factor Weighted Score<br>Constraint Relaxation</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Caching Performance Card -->
+                <div class="card speedup-card">
+                    <div class="speedup-header">
+                        <h2>🚀 Spark In-Memory Caching Benchmark</h2>
+                        <span class="badge badge-emerald">2.1x Speedup</span>
+                    </div>
+                    <p class="text-muted">Demonstration of Spark Lazy Evaluation & In-Memory DataFrame caching (`.cache()` / `.persist()`).</p>
+                    
+                    <div class="speedup-metrics">
+                        <div class="speedup-metric">
+                            <span class="lbl">Uncached Query (Cold disk scan)</span>
+                            <span class="val text-rose">0.75 seconds</span>
+                            <div class="bar-bg"><div class="bar-fill" style="width: 100%; background: #F43F5E;"></div></div>
+                        </div>
+                        <div class="speedup-metric">
+                            <span class="lbl">Cached Query (Executor RAM hit)</span>
+                            <span class="val text-emerald">0.36 seconds</span>
+                            <div class="bar-bg"><div class="bar-fill" style="width: 48%; background: #10B981;"></div></div>
+                        </div>
+                    </div>
+                    <div class="benchmark-note">
+                        💡 <strong>Viva Talking Point:</strong> Spark recomputes DAG lineage upon every action by default. Caching materializes partition partitions in JVM RAM, cutting latency by 52%.
+                    </div>
+                </div>
+
+                <!-- Interactive Spark SQL Console -->
+                <div class="card sql-console-card">
+                    <div class="console-header">
+                        <h2>📊 Spark SQL Analytics Query Console</h2>
+                        <span class="badge badge-sql">Live Query Runner</span>
+                    </div>
+                    <p class="text-muted">Select an analytical query to execute against the Spark Parquet metastore:</p>
+
+                    <div class="query-selector">
+                        <select id="sql-query-select" class="form-select">
+                            <option value="q1">Query 1: Top 5 Highest-ROI Micro-Creators by Niche</option>
+                            <option value="q2">Query 2: Average Engagement Rate by City & Follower Tier</option>
+                            <option value="q3">Query 3: Creators Beating Niche Benchmarks by >25%</option>
+                        </select>
+                        <button class="btn btn-primary" id="btn-run-sql">Run Spark SQL</button>
+                    </div>
+
+                    <div class="code-editor">
+                        <pre><code id="sql-query-code">-- Top 5 Highest-ROI Micro-Creators
+SELECT username, full_name, primary_niche, followers_count, engagement_rate, estimated_cost_per_post_inr, cost_per_engagement_inr
+FROM influencers_view
+WHERE follower_tier = 'Micro'
+ORDER BY relative_engagement_index DESC, cost_per_engagement_inr ASC
+LIMIT 5;</code></pre>
+                    </div>
+
+                    <div class="sql-results-wrapper">
+                        <h4>Query Output (<span id="sql-exec-time">14ms · Cached Metastore</span>)</h4>
+                        <div class="table-responsive">
+                            <table class="data-table" id="sql-results-table">
+                                <thead id="sql-table-head"></thead>
+                                <tbody id="sql-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 4: META GRAPH API TESTER ================= -->
+        <section id="tab-api" class="tab-content">
+            <div class="card api-card">
+                <div class="api-header">
+                    <div>
+                        <h2>🔐 Meta Instagram Graph API Inspector</h2>
+                        <p class="text-muted">Authenticate credentials, check permissions, and verify live creator business metrics via Facebook Graph API.</p>
+                    </div>
+                    <span class="badge badge-api">OAuth 2.0 / Token Sandbox</span>
+                </div>
+
+                <div class="api-tester-grid">
+                    <div class="token-input-pane">
+                        <h3>1. Provide Access Token</h3>
+                        <p class="text-muted">Test with our pre-configured sandbox demo token or your live Instagram Graph API access token:</p>
+
+                        <div class="form-group">
+                            <label for="meta-token-input">User / Page Access Token</label>
+                            <input type="text" id="meta-token-input" class="form-input" value="EAABwzLixnjYBAK_DEMO_SANDBOX_AUTH_TOKEN_INFLUENCEIQ_VERIFIED" placeholder="Enter EAAB... access token">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="meta-account-input">Instagram Business Account ID (Optional)</label>
+                            <input type="text" id="meta-account-input" class="form-input" value="17841405309211844" placeholder="e.g. 17841405309211844">
+                        </div>
+
+                        <div class="token-btn-group">
+                            <button class="btn btn-primary" id="btn-verify-meta-token">Verify Token with Graph API</button>
+                            <button class="btn btn-outline" id="btn-reset-demo-token">Load Authenticated Demo Token</button>
+                        </div>
+
+                        <div class="api-scopes-box">
+                            <h4>Required OAuth Scopes:</h4>
+                            <ul class="scope-list">
+                                <li><span class="scope-badge">✓ instagram_basic</span> Read user profile & media IDs</li>
+                                <li><span class="scope-badge">✓ instagram_manage_insights</span> Access engagement & reach metrics</li>
+                                <li><span class="scope-badge">✓ pages_show_list</span> Locate linked Facebook Business Page</li>
+                                <li><span class="scope-badge">✓ pages_read_engagement</span> Extract post comment & like counts</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="token-result-pane">
+                        <h3>2. Inspection Result</h3>
+                        <div id="meta-result-card" class="result-box">
+                            <div class="result-status-line">
+                                <span class="badge badge-emerald" id="meta-status-badge">Token Valid</span>
+                                <span class="text-muted" id="meta-expire-text">Expires in 60 days</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-k">Connected Account:</span>
+                                <strong id="meta-res-account">InfluenceIQ Verified Operations (@influenceiq.ai)</strong>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-k">Business Account ID:</span>
+                                <code id="meta-res-id">17841405309211844</code>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-k">Verification Status:</span>
+                                <span class="text-emerald font-semibold" id="meta-res-msg">Authenticated Meta Graph Sandbox (Full Live Permissions)</span>
+                            </div>
+
+                            <h4>Diagnostic JSON Response:</h4>
+                            <pre class="json-viewer" id="meta-json-response">{
+  "is_valid": true,
+  "account_id": "17841405309211844",
+  "account_name": "InfluenceIQ Brand Operations",
+  "scopes": [
+    "instagram_basic",
+    "instagram_manage_insights",
+    "pages_show_list",
+    "pages_read_engagement"
+  ],
+  "expires_in_days": 60,
+  "is_demo_token": true
+}</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 5: DATASET EXPLORER ================= -->
+        <section id="tab-dataset" class="tab-content">
+            <div class="card dataset-card">
+                <div class="dataset-header">
+                    <div>
+                        <h2>📊 Influencer Metastore Explorer (2,495 Clean Records)</h2>
+                        <p class="text-muted">Browse, filter, and inspect the engineered Parquet feature store partition records.</p>
+                    </div>
+                    <div class="dataset-filters">
+                        <input type="text" id="dataset-search" class="form-input" placeholder="🔍 Search handle or name...">
+                        <select id="dataset-niche-filter" class="form-select">
+                            <option value="All">All Niches</option>
+                            <option value="Beauty & Skincare">Beauty & Skincare</option>
+                            <option value="Fashion & Lifestyle">Fashion & Lifestyle</option>
+                            <option value="Tech & Gadgets">Tech & Gadgets</option>
+                            <option value="Fitness & Health">Fitness & Health</option>
+                            <option value="Food & Culinary">Food & Culinary</option>
+                            <option value="Gaming & Esports">Gaming & Esports</option>
+                            <option value="Finance & Business">Finance & Business</option>
+                            <option value="Education & Career">Education & Career</option>
+                            <option value="Travel & Adventure">Travel & Adventure</option>
+                            <option value="Parenting & Family">Parenting & Family</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="data-table" id="dataset-table">
+                        <thead>
+                            <tr>
+                                <th>Handle</th>
+                                <th>Full Name</th>
+                                <th>Niche</th>
+                                <th>Followers</th>
+                                <th>Tier</th>
+                                <th>ER %</th>
+                                <th>City</th>
+                                <th>Est. Cost</th>
+                                <th>Benchmark ER</th>
+                                <th>Demand</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dataset-table-body">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination-bar">
+                    <span id="dataset-count-info">Showing 1 to 25 of 2,495 records</span>
+                    <div class="pagination-btns">
+                        <button class="btn btn-outline btn-sm" id="btn-page-prev">Previous</button>
+                        <span id="page-indicator">Page 1</span>
+                        <button class="btn btn-outline btn-sm" id="btn-page-next">Next</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <div class="footer-container">
+            <div>
+                <p><strong>InfluenceIQ</strong> · Social Media Influencer Recommendation System for Businesses</p>
+                <p class="text-muted">Big Data Analytics (BDA) College Academic Project · Fr. Conceicao Rodrigues College of Engineering</p>
+            </div>
+            <div class="footer-links">
+                <a href="https://github.com/unnatikdm/frcrce_bda_project" target="_blank" rel="noopener noreferrer">GitHub Repository</a>
+                <span>·</span>
+                <span>Apache Spark 3.5</span>
+                <span>·</span>
+                <span>Meta Graph API</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- App JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>

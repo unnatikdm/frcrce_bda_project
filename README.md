@@ -7,6 +7,9 @@
 [![Dashboard](https://img.shields.io/badge/UI-Streamlit-FF4B4B.svg)](https://streamlit.io/)
 [![Visualizations](https://img.shields.io/badge/Charts-Plotly%20Interactive-3F4F75.svg)](https://plotly.com/)
 [![Tests](https://img.shields.io/badge/Tests-pytest%20Passing-success.svg)](https://docs.pytest.org/)
+[![Vercel](https://img.shields.io/badge/Deploy-Vercel%20Serverless-000000.svg?logo=vercel)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Funnatikdm%2Ffrcrce_bda_project)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Funnatikdm%2Ffrcrce_bda_project)
 
 ---
 
@@ -343,3 +346,15 @@ Render supports custom container deployments via the included `Dockerfile` and `
 5. Select the **Free** instance tier.
 6. Click **Create Web Service**.
 7. Render will build the image with Java + Python 3.11, launch Streamlit, and generate your public HTTPS URL (e.g., `https://influenceiq.onrender.com`).
+
+---
+
+### Option C: Vercel Deployment (Serverless Edge + Global CDN)
+The repository includes native Vercel configuration (`vercel.json`, `api/index.py` FastAPI serverless function, and `public/` responsive web app).
+
+1. Click the **[Deploy with Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Funnatikdm%2Ffrcrce_bda_project)** button or go to [vercel.com/new](https://vercel.com/new).
+2. Connect your GitHub account and import the repository: `unnatikdm/frcrce_bda_project`.
+3. Keep default settings (Vercel automatically detects `vercel.json` and static files in `public/`).
+4. Click **Deploy**.
+5. Your application will be live globally on Vercel's Edge network at:
+   $$\text{https://frcrce-bda-project.vercel.app}$$
