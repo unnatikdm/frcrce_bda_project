@@ -1,25 +1,7 @@
-# Python cache
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-
-# Virtual Environments
-venv/
-env/
 .venv/
-
-# Testing
+__pycache__/
 .pytest_cache/
-.coverage
-
-# IDE
-.idea/
-.vscode/
-
-# Streamlit secrets (if any)
-.streamlit/secrets.toml
-
-# OS
-.DS_Store
-Thumbs.db
+data/
+.env
+*.pyc
+*.egg-info/

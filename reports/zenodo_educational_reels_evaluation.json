@@ -1,0 +1,136 @@
+{
+  "evaluation_type": "within-dataset leave-one-Reel-out topical retrieval proxy; not creator-level holdout or campaign validation",
+  "dataset_name": "Educational Instagram Reels: Coded Dataset of 300 Reels from 21 Accounts",
+  "source_url": "https://doi.org/10.5281/zenodo.23301344",
+  "license_id": "CC-BY-4.0",
+  "source_collection_window": {
+    "start": "2026-09-02",
+    "end": "2026-10-01"
+  },
+  "creator_sha256": "00f7f2457f0bf686feeacaa3e1a766db532f0fd7054de49e2dabc1ccb36fe544",
+  "reel_sha256": "6c04a55928487f5ab15ec8b9c7daf375746aa8572b0dcc2c4e2b98c6ec753bdd",
+  "accounts": 21,
+  "reels_evaluated": 300,
+  "ranking_method": "TF-IDF cosine similarity over each account's remaining source-coded Reel topic labels",
+  "baseline_method": "descending source follower count; abbreviated source values converted to rounded estimates",
+  "tfidf_topic_retrieval": {
+    "queries": 300,
+    "mrr": 0.585768132595532,
+    "recall_at_1": 0.41333333333333333,
+    "recall_at_3": 0.7266666666666667,
+    "recall_at_5": 0.8666666666666667
+  },
+  "follower_count_baseline": {
+    "queries": 300,
+    "mrr": 0.1753950485359154,
+    "recall_at_1": 0.05,
+    "recall_at_3": 0.14333333333333334,
+    "recall_at_5": 0.23333333333333334
+  },
+  "tfidf_by_topic": {
+    "biology": {
+      "queries": 10,
+      "mrr": 0.9047619047619048,
+      "recall_at_1": 0.9,
+      "recall_at_3": 0.9,
+      "recall_at_5": 0.9
+    },
+    "finance": {
+      "queries": 10,
+      "mrr": 0.6666666666666667,
+      "recall_at_1": 0.5,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0
+    },
+    "history": {
+      "queries": 21,
+      "mrr": 0.4984126984126984,
+      "recall_at_1": 0.2857142857142857,
+      "recall_at_3": 0.8095238095238095,
+      "recall_at_5": 1.0
+    },
+    "language": {
+      "queries": 13,
+      "mrr": 0.926923076923077,
+      "recall_at_1": 0.9230769230769231,
+      "recall_at_3": 0.9230769230769231,
+      "recall_at_5": 0.9230769230769231
+    },
+    "math": {
+      "queries": 15,
+      "mrr": 0.7412698412698412,
+      "recall_at_1": 0.6,
+      "recall_at_3": 0.8666666666666667,
+      "recall_at_5": 0.8666666666666667
+    },
+    "medicine": {
+      "queries": 6,
+      "mrr": 0.47321428571428575,
+      "recall_at_1": 0.3333333333333333,
+      "recall_at_3": 0.6666666666666666,
+      "recall_at_5": 0.6666666666666666
+    },
+    "nature": {
+      "queries": 15,
+      "mrr": 0.38930075772181033,
+      "recall_at_1": 0.2,
+      "recall_at_3": 0.6666666666666666,
+      "recall_at_5": 0.6666666666666666
+    },
+    "other": {
+      "queries": 12,
+      "mrr": 0.14666305916305916,
+      "recall_at_1": 0.0,
+      "recall_at_3": 0.08333333333333333,
+      "recall_at_5": 0.25
+    },
+    "people": {
+      "queries": 16,
+      "mrr": 0.6681547619047619,
+      "recall_at_1": 0.5625,
+      "recall_at_3": 0.75,
+      "recall_at_5": 0.875
+    },
+    "politics": {
+      "queries": 8,
+      "mrr": 0.6458333333333334,
+      "recall_at_1": 0.375,
+      "recall_at_3": 0.875,
+      "recall_at_5": 0.875
+    },
+    "psychology": {
+      "queries": 21,
+      "mrr": 0.7084225715804663,
+      "recall_at_1": 0.6190476190476191,
+      "recall_at_3": 0.8095238095238095,
+      "recall_at_5": 0.9047619047619048
+    },
+    "science": {
+      "queries": 71,
+      "mrr": 0.5448803934719427,
+      "recall_at_1": 0.352112676056338,
+      "recall_at_3": 0.6619718309859155,
+      "recall_at_5": 0.8873239436619719
+    },
+    "space": {
+      "queries": 36,
+      "mrr": 0.6478174603174603,
+      "recall_at_1": 0.4166666666666667,
+      "recall_at_3": 0.7777777777777778,
+      "recall_at_5": 0.9722222222222222
+    },
+    "technology": {
+      "queries": 46,
+      "mrr": 0.504342013485236,
+      "recall_at_1": 0.2826086956521739,
+      "recall_at_3": 0.6739130434782609,
+      "recall_at_5": 0.8695652173913043
+    }
+  },
+  "limitations": [
+    "The 300 Reel topics were coded by one researcher; this evaluates retrieval of that coding, not audience or business relevance.",
+    "The held-out Reel's account remains represented by that account's other Reels, so this is not generalization to unseen creators.",
+    "Follower counts are rounded estimates where the workbook uses abbreviated labels.",
+    "Views and comments are not used as relevance labels; there are no observed campaign outcomes."
+  ]
+}

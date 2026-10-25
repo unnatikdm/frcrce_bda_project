@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: influence
+      POSTGRES_USER: influence
+      POSTGRES_PASSWORD: influence
+    ports:
+      - "55432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U influence -d influence"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    mem_limit: 1g
+volumes:
+  pgdata:

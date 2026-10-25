@@ -1,7 +1,0 @@
-services:
-  - type: web
-    name: influenceiq
-    env: docker
-    plan: free
-    dockerfilePath: Dockerfile
-    autoDeploy: true

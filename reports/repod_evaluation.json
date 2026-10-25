@@ -1,0 +1,137 @@
+{
+  "evaluation_type": "within-dataset descriptive proxy; not independent or campaign-outcome validation",
+  "dataset_name": "Judge-rated dataset of nano- and micro-influencers",
+  "source_url": "https://repod.icm.edu.pl/dataset.xhtml?persistentId=doi%3A10.18150%2FKUW9CA",
+  "license_id": "CC-BY-4.0",
+  "source_collection_date": "Not disclosed; source describes a three-month observation period",
+  "retrieved_at_utc": "2026-10-18T16:26:13.535588+00:00",
+  "input_sha256": "94338a9aa29d7357f3c507d0058d031d4c4f7ff9b152223c0709847d552386f4",
+  "records_loaded": 392,
+  "comparison": "Spearman correlation: judge-rated opinion leadership vs judge-rated intention to recommend",
+  "overall": {
+    "n": 392,
+    "spearman_rho": 0.7085732173429686,
+    "p_value": 5.0286180718568396e-61,
+    "status": "computed from study ratings"
+  },
+  "by_niche": {
+    "fitness": {
+      "n": 93,
+      "spearman_rho": 0.6489816322333878,
+      "p_value": 1.9889328503033525e-12,
+      "status": "computed from study ratings"
+    },
+    "beauty": {
+      "n": 104,
+      "spearman_rho": 0.6156930200288376,
+      "p_value": 3.511639213907107e-12,
+      "status": "computed from study ratings"
+    },
+    "lifestyle": {
+      "n": 143,
+      "spearman_rho": 0.49355000917338815,
+      "p_value": 3.772055936288931e-10,
+      "status": "computed from study ratings"
+    },
+    "travel": {
+      "n": 52,
+      "spearman_rho": 0.691712342940131,
+      "p_value": 1.3606249325613311e-08,
+      "status": "computed from study ratings"
+    }
+  },
+  "ranking_evaluation": {
+    "metric": "NDCG@10, target judge-rated intention to recommend",
+    "scope": "Same-sample retrospective ranking proxy, not a held-out evaluation",
+    "overall": {
+      "n": 257,
+      "k": 10,
+      "opinion_leadership_ndcg": 0.815122197042266,
+      "follower_count_baseline_ndcg": 0.1010086737914801,
+      "relevance": "judge-rated intention to recommend; graded gain 2^rating - 1"
+    },
+    "by_niche": {
+      "fitness": {
+        "n": 93,
+        "k": 10,
+        "opinion_leadership_ndcg": 0.8579809428223729,
+        "follower_count_baseline_ndcg": 0.3940151963810134,
+        "relevance": "judge-rated intention to recommend; graded gain 2^rating - 1"
+      },
+      "beauty": {
+        "n": 77,
+        "k": 10,
+        "opinion_leadership_ndcg": 0.815122197042266,
+        "follower_count_baseline_ndcg": 0.3201992689458311,
+        "relevance": "judge-rated intention to recommend; graded gain 2^rating - 1"
+      },
+      "lifestyle": {
+        "n": 35,
+        "k": 10,
+        "opinion_leadership_ndcg": 0.8753142497301398,
+        "follower_count_baseline_ndcg": 0.501749354207772,
+        "relevance": "judge-rated intention to recommend; graded gain 2^rating - 1"
+      },
+      "travel": {
+        "n": 52,
+        "k": 10,
+        "opinion_leadership_ndcg": 0.8482378089219647,
+        "follower_count_baseline_ndcg": 0.7569021067152308,
+        "relevance": "judge-rated intention to recommend; graded gain 2^rating - 1"
+      }
+    },
+    "candidate_fold_diagnostic": {
+      "n": 257,
+      "folds": 5,
+      "splitter": "KFold(shuffle=True, random_state=42); each creator occurs in one candidate fold",
+      "opinion_leadership_ndcg_mean": 0.9069949957456368,
+      "opinion_leadership_ndcg_population_std": 0.11337024517968844,
+      "follower_count_baseline_ndcg_mean": 0.37994803511266345,
+      "follower_count_baseline_ndcg_population_std": 0.07758053925845793,
+      "fold_results": [
+        {
+          "fold": 1,
+          "n": 52,
+          "k": 10,
+          "opinion_leadership_ndcg": 0.6807074678304155,
+          "follower_count_baseline_ndcg": 0.31737701020524517
+        },
+        {
+          "fold": 2,
+          "n": 52,
+          "k": 10,
+          "opinion_leadership_ndcg": 0.968107076514912,
+          "follower_count_baseline_ndcg": 0.3066810003977618
+        },
+        {
+          "fold": 3,
+          "n": 51,
+          "k": 10,
+          "opinion_leadership_ndcg": 0.97388112803218,
+          "follower_count_baseline_ndcg": 0.5040576628164328
+        },
+        {
+          "fold": 4,
+          "n": 51,
+          "k": 10,
+          "opinion_leadership_ndcg": 0.9530427713110684,
+          "follower_count_baseline_ndcg": 0.4374771863660239
+        },
+        {
+          "fold": 5,
+          "n": 51,
+          "k": 10,
+          "opinion_leadership_ndcg": 0.9592365350396082,
+          "follower_count_baseline_ndcg": 0.3341473157778535
+        }
+      ],
+      "scope": "This is a candidate-fold stability diagnostic, not model cross-validation: no model is fitted. Each fold ranks only its included creators using their observed opinion-leadership ratings and evaluates against their intention-to-recommend ratings from the same historical study. It is not independent outcome or campaign validation."
+    }
+  },
+  "limitations": [
+    "Same research sample supplies ranking and proxy target",
+    "Judge ratings are not observed campaign outcomes",
+    "No causal or predictive claim",
+    "Three-month observation window has no disclosed exact dates"
+  ]
+}

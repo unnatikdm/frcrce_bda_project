@@ -1,360 +1,154 @@
-# InfluenceIQ: Instagram Influencer Recommendation System for Businesses
-**Big Data Analytics (BDA) Subject Project | College Demonstration & Viva Edition**
+# InfluenceMatch (local, INR 0)
 
-[![Python](https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-blue.svg)](https://www.python.org/)
-[![Apache Spark](https://img.shields.io/badge/Apache%20Spark-PySpark%204.x-E25A1C.svg)](https://spark.apache.org/)
-[![Storage](https://img.shields.io/badge/Storage-Apache%20Parquet%20Columnar-00A4E4.svg)](https://parquet.apache.org/)
-[![Dashboard](https://img.shields.io/badge/UI-Streamlit-FF4B4B.svg)](https://streamlit.io/)
-[![Visualizations](https://img.shields.io/badge/Charts-Plotly%20Interactive-3F4F75.svg)](https://plotly.com/)
-[![Tests](https://img.shields.io/badge/Tests-pytest%20Passing-success.svg)](https://docs.pytest.org/)
-[![Vercel](https://img.shields.io/badge/Deploy-Vercel%20Serverless-000000.svg?logo=vercel)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Funnatikdm%2Ffrcrce_bda_project)
+A locally runnable Instagram creator recommendation project. **No profiles, posts, engagement figures, or campaign outcomes are fabricated.** An optional integration uses an openly licensed historical research dataset; it has no bios and no disclosed exact observation dates.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Funnatikdm%2Ffrcrce_bda_project)
+See [MASTER_PROMPT.md](./MASTER_PROMPT.md) for the project's goal and non-negotiable data-integrity requirements.
 
----
+## Hardware and setup
 
-## 1. Project Overview & Business Problem
+Inspected environment: Windows 11 x64, 16 logical CPUs, 15.4 GB RAM, 82 GB free on C:, Python 3.13 and 3.14 installed, Java 25, Docker Compose 5.1.2. Docker Desktop was installed and its Linux engine was subsequently started for PostgreSQL verification. Use Python 3.13, Spark local mode `local[2]`, and the included PostgreSQL container capped at 1 GB. Spark uses a 2 GB driver. PySpark 4.2 ran on this machine with Java 25 and Python 3.13. If your Java version differs, use Spark-supported Java 17, 21, or 25; set `JAVA_HOME` only if it is not already configured. [Spark platform requirements](https://spark.apache.org/docs/latest/).
 
-In modern digital marketing, small and medium enterprises (SMEs) struggle to select suitable social media influencers. Traditional agency selections rely on vanity metrics (such as gross follower count), resulting in wasted marketing capital on fake followers, poor engagement, and geographic mismatches.
+Docker Desktop currently lists education as a free use category; the license describes educational use for academic or research purposes in a classroom environment. Check the terms for your own circumstances. [Docker Desktop terms](https://docs.docker.com/subscription-billing/desktop-license/). PostgreSQL is under the PostgreSQL License. No paid API, cloud service, subscription, or API key is required. [PostgreSQL license](https://www.postgresql.org/about/licence/).
 
-**InfluenceIQ** is a genuine **Big Data Analytics (BDA)** platform that ingests multi-format influencer data, executes distributed data cleaning and feature engineering in **Apache Spark (PySpark)**, persists partitioned **Apache Parquet** columnar files, and runs an explainable multi-criteria recommendation engine coupled with an interactive **Streamlit** analytics dashboard.
-
-### Core Business Demonstration Scenario
-> **Scenario:** A Mumbai-based skincare startup has an allocated marketing budget of **₹20,000 INR** per post and wants to promote an organic serum through authentic creators who have at least a **3.0% engagement rate** and audience relevance in Mumbai.
->
-> **How InfluenceIQ Solves It:**
-> 1. Filters out creators outside the ₹20,000 budget cap or below 3.0% engagement.
-> 2. Normalizes scores across Niche Relevance (30%), Engagement Quality (25%), Budget Fit (20%), Location Match (15%), and Reach (10%).
-> 3. Generates transparent, quantitative justifications explaining exactly why each creator was chosen.
-
----
-
-## 2. Technology Stack
-
-| Layer | Technology | Purpose in Big Data Architecture |
-|---|---|---|
-| **Distributed Engine** | **Apache Spark (PySpark 4.2)** | Distributed processing, partition-level transformations, broadcast joins, and Catalyst query optimization in `local[2]` mode. |
-| **Storage Architecture** | **Apache Parquet** | Snappy-compressed, columnar storage format partitioned by `primary_niche` for partition and column pruning. |
-| **Analytics & SQL** | **Spark SQL** | In-memory relational queries, aggregations, window rollups, and Catalyst plan (`EXPLAIN`) inspections. |
-| **Authentication & Live API** | **Meta Instagram Graph API v19.0** | OAuth token authentication, live business account verification, and Meta Business Discovery API integration. |
-| **Dataset Authenticity** | **Verified Public Creator Dataset** | Real Instagram creators (`@tarini_peshwaria`, `@virat.kohli`, `@komalpandeyofficial`, `@hudabeauty`) sourced from open public benchmarks. |
-| **Storage Theory** | **Hadoop HDFS Concepts** | Architectural model for distributed block storage ($128\text{ MB}$ default blocks) and NameNode/DataNode fault tolerance. |
-| **Web Dashboard** | **Streamlit** | Interactive interface with campaign input forms, candidate comparisons, Meta API auth, and SQL consoles. |
-| **Visualization** | **Plotly** | High-performance interactive charts (radar comparisons, engagement decay curves, bubble plots). |
-| **Data Auxiliary** | **Pandas & NumPy** | UI-side data conversions, vectorized math, and dataset inspection. |
-| **Verification** | **pytest** | Automated test suite (9 tests) verifying schemas, monotonic ranking, API client, and PySpark cleaning. |
-
----
-
-## 3. Big Data Concepts & The 5 Vs
-
-InfluenceIQ demonstrates core Big Data engineering principles:
-
-```
-                            THE 5 Vs OF BIG DATA
-                                     │
-         ┌──────────────┬────────────┼─────────────┬─────────────┐
-         ▼              ▼            ▼             ▼             ▼
-      VOLUME         VELOCITY     VARIETY       VERACITY       VALUE
-  Thousands of     Repeatable    Multi-format   PySpark ETL    Actionable
-  profiles with    batch ETL     ingestion of   resolves nulls, ROI ranking
-  partitioned      simulating    CSV, JSON, &   duplicates,    preventing
-  Parquet storage  micro-batches broadcast sets & casing bugs  budget waste
-```
-
-1. **Volume:** Social networks generate billions of interaction logs. InfluenceIQ partitions datasets by `primary_niche`, demonstrating partition pruning to avoid full table scans.
-2. **Velocity:** Batch processing pipeline refreshes creator statistics, simulates micro-batch ingestion, and benchmarks throughput up to **1,000+ records/second** on local hardware.
-3. **Variety:** Handles heterogeneous data sources: structured profile CSVs, semi-structured JSON engagement data, and reference benchmark tables.
-4. **Veracity (Data Quality):** Real-world social data contains noisy anomalies. PySpark DataFrame transformations deduplicate rows, impute missing fields, filter non-positive follower counts, and standardize inconsistent category text.
-5. **Value:** Directly translates raw social metrics into cost-per-engagement (CPE) metrics and actionable rankings that maximize marketing return on investment (ROI).
-
-### 🎓 Academic Note: Local Spark vs. Multi-Node Cluster
-* **This Project's Execution Mode:** Runs in `local[*]` (or `local[2]`) mode on a multi-core laptop. This allows full demonstration of PySpark DataFrames, Spark SQL, Catalyst optimization, broadcast joins, and in-memory caching without requiring expensive cloud infrastructure.
-* **Production Deployment:** In an enterprise setting, this exact PySpark code deploys onto a multi-node Hadoop YARN or Kubernetes cluster with HDFS / Amazon S3 storage, processing terabytes of data across distributed worker nodes with zero code modifications.
-
----
-
-## 4. End-to-End System Architecture
-
-```mermaid
-flowchart TD
-    subgraph S1["1. Data Ingestion"]
-        A1["Raw Influencers CSV"] --> B1["Schema-on-Read StructType"]
-        A2["Engagement Logs JSON"] --> B1
-        A3["Niche Benchmarks Reference"] --> B1
-    end
-
-    subgraph S2["2. PySpark Distributed ETL"]
-        B1 --> C1["Deduplication by influencer_id"]
-        C1 --> C2["Text Standardization & Casing"]
-        C2 --> C3["Null Imputation & Anomaly Filtering"]
-        C3 --> C4["Broadcast Join with Industry Benchmarks"]
-        C4 --> C5["Feature Engineering: ER, CPE, Tiers"]
-    end
-
-    subgraph S3["3. Columnar Persistence"]
-        C5 --> D1["Write Apache Parquet\nPartitioned by primary_niche"]
-        D1 --> D2["Spark SQL Catalog\n(Temporary View: influencers)"]
-    end
-
-    subgraph S4["4. Explainable Recommendation & UI"]
-        D2 --> E1["Hard Campaign Eligibility Filtering\n(Budget, Min ER, Location, Followers)"]
-        E1 --> E2["Multi-Factor Weighted Scoring Formula\n(Niche 30%, ER 25%, Budget 20%, Loc 15%, Reach 10%)"]
-        E2 --> E3["Natural-Language Reason Generation\n('Why Recommended?')"]
-        E3 --> F1["Streamlit 5-Tab Interactive Dashboard"]
-    end
-```
-
----
-
-## 5. Dataset Schema & Data Dictionary
-
-The synthetic dataset generates realistic, reproducible creator profiles adhering to power-law follower distributions and typical engagement rates observed on Instagram.
-
-### Schema Fields
-| Field Name | Type | Description |
-|---|---|---|
-| `influencer_id` | `String` | Primary business key (e.g. `INF_10024`). |
-| `username` | `String` | Social media handle (e.g. `@aarav_tech_42`). |
-| `full_name` | `String` | Creator's display name. |
-| `primary_niche` | `String` | Primary content category (e.g. `Beauty & Skincare`, `Tech & Gadgets`). |
-| `secondary_niche` | `String` | Sub-specialization (e.g. `Clean Beauty`, `AI & Coding`). |
-| `followers_count` | `Long` | Total follower count (log-normal distribution: $2\text{k}$ to $2.5\text{M}$). |
-| `following_count` | `Integer` | Number of accounts followed. |
-| `posts_count` | `Integer` | Total posts published to date. |
-| `avg_likes` | `Long` | Average organic likes per post. |
-| `avg_comments` | `Long` | Average organic comments per post. |
-| `avg_video_views` | `Long` | Average Reel / Video view count. |
-| `location_city` | `String` | Creator's home base (Mumbai, Delhi, Bengaluru, Pune, etc.). |
-| `audience_top_city`| `String` | City with highest follower concentration. |
-| `audience_age_group`| `String` | Dominant demographic bucket (`18-24`, `25-34`, `35-44`). |
-| `audience_gender_female_pct`| `Double` | Proportion of female followers ($0.0$ to $1.0$). |
-| `is_verified` | `Boolean` | Instagram verification checkmark status. |
-| `avg_post_frequency_per_week`| `Double` | Publishing cadence (posts per week). |
-| `estimated_cost_per_post_inr`| `Double` | Market price estimate in INR based on niche CPM and reach. |
-
-### PySpark Engineered Features
-| Feature Name | Computation Formula | Purpose |
-|---|---|---|
-| `engagement_rate` | $\frac{\text{avg\_likes} + \text{avg\_comments}}{\text{followers\_count}} \times 100$ | Primary engagement quality indicator. |
-| `comment_to_like_ratio` | $\frac{\text{avg\_comments}}{\text{avg\_likes} + 1}$ | Measures conversational depth vs. passive likes. |
-| `follower_tier` | Conditional thresholds ($<10\text{k}$: Nano, $10\text{k}-50\text{k}$: Micro, $50\text{k}-500\text{k}$: Mid, $500\text{k}-1\text{M}$: Macro, $>1\text{M}$: Mega) | Influencer market categorization. |
-| `cost_per_engagement_inr` | $\frac{\text{estimated\_cost\_per\_post}}{\text{avg\_likes} + \text{avg\_comments} + 1}$ | Cost-efficiency metric (CPE in INR). |
-| `relative_engagement_index` | $\frac{\text{engagement\_rate}}{\text{benchmark\_engagement\_rate}}$ | Performance relative to niche market average. |
-| `activity_score` | Cadence curve ($100$ is optimal: $5-7$ posts/week) | Penalizes inactive or spam accounts. |
-
----
-
-## 6. Recommendation Algorithm & Mathematical Formulation
-
-InfluenceIQ employs an **explainable multi-criteria decision ranking model**. Unlike opaque black-box machine learning algorithms, every scoring dimension is inspectable and adjustable by campaign managers.
-
-### Step 1: Campaign Eligibility Filtering (Hard Constraints)
-Profiles are filtered before scoring to eliminate unviable candidates:
-1. **Niche Match:** $\text{primary\_niche} = \text{target\_niche}$ (or 'All').
-2. **Follower Bounds:** $\text{min\_followers} \le \text{followers\_count} \le \text{max\_followers}$.
-3. **Engagement Threshold:** $\text{engagement\_rate} \ge \text{min\_engagement\_rate}$.
-4. **Budget Constraint:** $\text{estimated\_cost\_per\_post\_inr} \le \text{campaign\_budget}$.
-5. **Location Constraint:** Soft preference with matching priority.
-
-*Fallback Mechanism:* If zero creators satisfy 100% of the strict constraints, the engine automatically relaxes budget by $+30\%$ and ER by $-1.0\%$ to present near-miss candidates rather than an empty screen.
-
-### Step 2: Normalized Sub-Scores ($S_i \in [0.0, 1.0]$)
-- **Niche Relevance ($S_{\text{niche}}$):** $1.0$ if primary niche matches target; $0.75$ if secondary niche matches; $0.30$ baseline.
-- **Engagement Quality ($S_{\text{eng}}$):** $\min\left(1.0, \frac{\text{engagement\_rate}}{1.5 \times \text{benchmark\_er}}\right) + \text{conversational\_bonus}$.
-- **Budget Fit ($S_{\text{budget}}$):** Optimal score ($1.0$) when cost utilizes $40\%-90\%$ of budget. Slight penalty if under-budget (leaving reach on the table) or exceeding budget.
-- **Location Match ($S_{\text{loc}}$):** $1.0$ if creator resides in target city and audience is concentrated there; $0.85$ for national campaigns.
-- **Reach Fit ($S_{\text{reach}}$):** Logarithmic normalization: $S_{\text{reach}} = \frac{\log_{10}(\text{followers}) - \log_{10}(\min)}{\log_{10}(\max) - \log_{10}(\min)}$.
-
-### Step 3: Total Weighted Score Formulation
-$$\text{Score} = \left( \sum_{i=1}^{5} w_i \cdot S_i \right) \times 100$$
-Where default weights are:
-$$w_{\text{niche}} = 0.30, \quad w_{\text{eng}} = 0.25, \quad w_{\text{budget}} = 0.20, \quad w_{\text{loc}} = 0.15, \quad w_{\text{reach}} = 0.10$$
-Weights are dynamically normalized: $\sum w_i = 1.0$.
-
----
-
-## 7. Project Directory Structure
-
-```
-influenceiq/
-├── app.py                         # Streamlit 5-tab interactive dashboard
-├── requirements.txt               # Pinned project dependencies
-├── pytest.ini                     # Test configuration for Windows compatibility
-├── README.md                      # Comprehensive BDA documentation & viva guide
-├── ANTIGRAVITY_PROMPT.md          # Specification prompt
-├── data/
-│   ├── raw/                       # Raw ingested datasets (CSV & JSON)
-│   ├── benchmarks/                # Niche industry benchmark tables
-│   └── processed/                 # Partitioned Parquet storage & evaluation reports
-│       └── influencers_parquet/   # Partitioned by primary_niche
-├── src/
-│   ├── __init__.py
-│   ├── data_ingestion.py          # SparkSession config & schema-on-read ingestion
-│   ├── data_cleaning.py           # PySpark deduplication, imputation & normalization
-│   ├── feature_engineering.py     # KPIs, broadcast join & Parquet persistence
-│   ├── analytics.py               # Spark SQL aggregations & physical plan inspections
-│   ├── recommender.py             # Weighted multi-factor ranking & explainability
-│   ├── etl_pipeline.py            # End-to-end batch processing pipeline orchestrator
-│   └── evaluation.py              # Scalability benchmarking & caching evaluation
-├── scripts/
-│   └── generate_sample_data.py    # Synthetic data generator with controlled anomalies
-└── tests/
-    ├── __init__.py
-    └── test_pipeline.py           # Unit and integration test suite
-```
-
----
-
-## 8. Installation & Execution Guide
-
-### Prerequisites
-- **Python 3.10+** (tested and verified on Python 3.14 on Windows)
-- **Java 17, 21, or 25 (LTS)** for Apache Spark execution
-- Windows PowerShell or Bash terminal
-
-### Step 1: Navigate to Workspace
 ```powershell
-cd C:\Users\elonm\.gemini\antigravity-ide\scratch\influenceiq
+py -3.13 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -e ".[test,bigdata,repod]"
+# This machine uses Java 25. Set JAVA_HOME only if Java is not already configured.
+# $env:JAVA_HOME = "<path to OpenJDK 17, 21, or 25>"
+# $env:Path = "$env:JAVA_HOME\bin;$env:Path"
+# Start Docker Desktop first, then:
+docker compose up -d --wait postgres
 ```
 
-### Step 2: Install Dependencies
+PySpark's current source archive is large (about 450 MB when checked). It is an optional `bigdata` extra; the educational Reels adapter also needs the optional `datasets` extra; omit both to run the API and data-import validation first. `docker compose up -d --wait postgres` is optional for the local API and Parquet flow.
+
+## Data policy and current status
+
+Only authentic source data may enter the pipeline. The optional RepOD adapter downloads one openly licensed research file with checksum verification; the project does not scrape Instagram or call platform APIs. Public visibility alone is not permission to reuse personal data. Before importing, verify provenance, terms, attribution, privacy requirements, and your permitted purpose. The import manifest records the operator-declared source and license but **does not independently verify authenticity or legal rights**. A dataset that cannot be verified should not be imported.
+
+### Data-source screening (checked 2026-10-18)
+
+| Candidate | What its source documents | Decision |
+|---|---|---|
+| [Judge-rated dataset of nano- and micro-influencers](https://repod.icm.edu.pl/dataset.xhtml?persistentId=doi%3A10.18150%2FKUW9CA) | RepOD records CC BY 4.0, 398 Instagram profiles assessed by two judges during a three-month period; ODS contains 393 observations, niche labels, follower counts, study ratings; one observation lacks a creator identifier, so 392 usable records are imported. No bios or exact observation dates. | Accepted as historical research benchmark only. Published ODS MD5 verified; TSV checksum mismatch means TSV is not used. |
+| [Educational Instagram Reels: Coded Dataset of 300 Reels from 21 Accounts](https://doi.org/10.5281/zenodo.23301344) | Zenodo record is open CC BY 4.0; author reports 300 Reels from 21 public accounts, published 2026-02-04 through 2026-10-01 and coded 2026-09-02 through 2026-10-01. Workbook includes author, follower labels, topics, views, comments, Reel URLs, and single-researcher content ratings. No likes. | Accepted as a narrow educational-content dataset. Workbook checksum is verified; follower/view/comment labels are partly abbreviated. The source is not a general creator directory, and metrics are one-time historical observations. |
+| [Kim et al. Instagram Influencer Dataset](https://sites.google.com/site/sbkimcv/dataset/instagram-influencer-dataset) | Researcher page describes 33,935 creators and 10,180,500 posts; metadata is about 37 GB and images about 189 GB. Files require a research-purpose request; no reuse license or commercial terms are stated on the page. | Not imported pending direct permission/license clarification. Full media also exceeds this machine’s current 82 GB free disk. |
+| [Cheerful Instagram engagement benchmarks](https://www.cheerful.ai/research/instagram-engagement-benchmarks) | CC BY 4.0 aggregate quartiles for 5,924 Instagram accounts with at least 1,000 followers; measured 2026-08-17 to 2026-09-06, with sample counts and engagement-rate definition. | Accepted as a dated reference benchmark only, not creator-level recommendation data. Imported rates can be compared against follower-tier quartiles; the benchmark does not change ranking. |
+| [Social Media influencers-Content Analysis](https://data.mendeley.com/datasets/5b4vpr4752/1) | CC BY 4.0 annotation spreadsheet for content from Snapchat and Instagram accounts of 23 Arab-world influencers; source says 7,400+ annotated items, while the original media are not included. | Screened but not integrated: the small, region-specific annotated sample is not a broad creator inventory and does not document campaign outcomes or current performance. File schema and identity linkage would need review before using it for recommendations. |
+| [Luvs Creator Price Index](https://luvs.one/research) | CC BY 4.0 monthly aggregate prices for subscription pages on a curated creator catalogue; aggregates are explicitly not per-creator data or sponsorship fees. | Not used for Instagram campaign budget filtering; subscription prices are not campaign quotes. |
+| [Sponsored and Unsponsored Posts on Instagram](https://zenodo.org/records/5082114) | Zenodo lists 29,425 sponsored and 28,779 unsponsored posts collected 2020-04-15 to 2020-05-15, with user IDs, follower counts, likes, comments; license field is blank. | Rejected pending explicit reuse terms; no creator niche, caption, or location fields are listed. |
+| [Social Media Influencers Dataset](https://figshare.com/articles/dataset/_strong_Social_Media_Influencers_Dataset_strong_/23576037) | CC BY 4.0, 5 KB SPSS file described as consumer-behavior study data for beauty products in the US. | Rejected as a creator inventory; it is consumer study data, not influencer profile/post records. |
+| [Instagram Posts from Academic Libraries Profiles](https://zenodo.org/records/11102526) | Zenodo describes captions, dates and interaction rates from 120 library accounts, but its public record leaves the license field blank; the accounts are institutional library profiles, not a general influencer directory. | Rejected for this project: no reuse license verified. |
+| [Abertay Instagram influencer engagement data](https://rke.abertay.ac.uk/en/datasets/data-for-exploring-customer-engagement-with-instagram-influencers/) | CC BY; data produced 2022-11-05 to 2022-12-05; study files are consumer research/questionnaire material | Not a creator/profile inventory, so it cannot provide eligible influencer recommendations |
+| [InSTA 150k](https://huggingface.co/datasets/data-for-agents/insta-150k-v3) | Dataset card identifies web-navigation instruction tasks, despite `insta` in its name | Not Instagram platform data |
+| [Oliveira Instagram sponsored-content thesis](https://repositorio.ufmg.br/bitstreams/4185433e-5b95-483a-859a-01df3e2e5896/download) | Describes an Instagram web crawler for collecting public timelines; a permission chain and reusable dataset license were not established | Rejected: scraping is excluded by project policy and no reuse terms were verified |
+| [CrowdTangle-based influencer study](https://github.com/thalesbertaglia/instagram-disclosure-trends) | Research repo documents a CrowdTangle token collection pipeline; Meta ended CrowdTangle availability on 2024-08-14 | Not a reproducible current acquisition path ([Meta notice](https://about.fb.com/news/2023/11/new-tools-to-support-independent-research/)) |
+| [Dexfluence mirror](https://huggingface.co/datasets/Shikha180224/dexfluence-indian-creator-index) | Claims CC BY 4.0, but the card's described origin and publication instructions do not establish an independently traceable collection or rights chain | Not accepted or downloaded |
+| [Instagram Influencer and Brand Dataset](https://huggingface.co/datasets/AzrilFahmiardi/instagram_influencer_and_brand/tree/ab0e29bb9464481e83f62b54199c2c868269609e) | Repository revision `ab0e29bb9464481e83f62b54199c2c868269609e` (updated 2025-07-10): card metadata declares MIT, while README restricts use to research/non-commercial and gives no collection method/date or verification of profile/rate fields. | Rejected pending license clarification and authentic-source provenance; not imported. |
+
+RepOD and the Zenodo educational Reels file are the accepted creator sources; each is narrow. Cheerful contributes only an aggregate engagement reference, not creator recommendations. Its repository license is verified; the software cannot certify every legal interpretation or profile accuracy. An official Meta API connector is also not implemented: Meta's official API collection describes access for professional accounts and linked Page setup, and the existing workspace has no authorized token or reviewed app. The Instagram API with Facebook Login cannot access consumer accounts. [Meta Instagram API documentation](https://www.postman.com/meta/instagram/documentation/6yqw8pt/instagram-api).
+
+The RepOD adapter accepts only its ODS artifact after verifying the published MD5. It imports creator identifier, follower count, four study niche labels (fitness, beauty, lifestyle, travel), available judge ratings, and source metrics for AQS, average likes/comments per post, engagement rate, compensation, and post count. Missing and formula-error cells are counted in the manifest without fabricated replacements. Source engagement-rate units and compensation currency are unspecified, so those values are retained verbatim as source metrics but are not normalized, filtered, or matched to campaign budgets. The adapter does not infer bios, countries, language, profile URLs, or observation dates. A brief containing a supported niche ranks overlapping profiles using the mean of observed items in the study’s six-item judge-rated opinion-leadership construct. Each result includes the score, matched niche, observed rating-item count, observed source item values, numerator, denominator, and calculation; profiles with no score are excluded rather than assigned zero. This historical research measure is not campaign success or a current platform metric. Other properly sourced CSV/JSONL data can use general TF-IDF bio/topic matching. Creator-country, language, follower, and engagement-rate eligibility filters apply only to values present in the source. Engagement and follower filters do not contribute to ranking scores; creator country does not represent audience geography. A conditional budget-filter path is available only when a permitted imported record has an exact per-deliverable `rate_amount`, `rate_currency`, and `rate_deliverable`; it requires the campaign currency and deliverable to match exactly and applies no exchange-rate conversion. No accepted source currently supplies real per-creator quotes, so a successful budget-filtered recommendation has not been demonstrated. Missing rates are excluded when a budget cap is used. RepOD has no usable per-creator quote, so budget filtering is unavailable for it. Audience composition and campaign outcomes are not supported.
+
+Use the optional RepOD research dataset with this checksum-verifying adapter (no key required):
+
 ```powershell
-python -m pip install -r requirements.txt
+pip install -e ".[test,repod]"
+python -m influencematch.repod_import
 ```
 
-### Step 3: Generate Dataset & Run PySpark ETL Pipeline
+It reads the verified local ODS cache if present; otherwise it downloads from RepOD over HTTPS. It refuses any content whose MD5 differs from repository metadata. Cite Korzyński and Protsiuk (2026), *Judge-rated dataset of nano- and micro-influencers*, RepOD, DOI [10.18150/KUW9CA](https://doi.org/10.18150/KUW9CA), CC BY 4.0. The dataset release date is not represented as collection date. Data are saved under git-ignored `data/active`.
+
+Use the second openly licensed source when you want the educational Reels sample active (this replaces the one active dataset; it does not merge independent sources):
+
 ```powershell
-# Generate 2,500 realistic influencer profiles with controlled anomalies
-python scripts/generate_sample_data.py --count 2500
-
-# Execute PySpark batch ETL pipeline and write partitioned Parquet dataset
-python -m src.etl_pipeline
+pip install -e ".[datasets,bigdata,test]"
+python -m influencematch.tvorog_import
+python -m influencematch.pipeline --master "local[2]"
+python -m influencematch.db
 ```
 
-### Step 4: Run Automated Tests
+The adapter verifies the Zenodo workbook MD5, records the source date window, and aggregates 300 observed Reels into 21 account profiles. It retains each Reel in `reels.jsonl`, writes creator and Reel Parquet tables, and loads both tables into PostgreSQL. Matching uses only source-coded Reel topic labels. Views, comments, and one-researcher quality ratings are descriptive evidence, not ranking inputs or campaign outcomes. No likes are supplied, so the project does not calculate an engagement rate. Source follower, view, and comment labels may be abbreviated; their converted values are marked approximate. Attribute Grigorii Tvorogov (2026), *Educational Instagram Reels: Coded Dataset of 300 Reels from 21 Accounts*, Zenodo, DOI [10.5281/zenodo.23301344](https://doi.org/10.5281/zenodo.23301344), CC BY 4.0.
+
+For other source files, import only after confirming that their license and terms permit this use. Optional input fields include `engagement_rate` as a fraction from 0 to 1, and a complete creator quote triple: `rate_amount`, `rate_currency` (three-letter code), and `rate_deliverable` (for example, the source’s exact deliverable label). Partial quote triples and invalid numeric rates are rejected. Budget filtering compares the campaign cap against `rate_amount × deliverable_count` in the same currency and deliverable; it never guesses missing rates or converts currency. Supply its recorded collection/snapshot date, URL, and license identifier. The explicit rights flag is an operator attestation, not a software verification or legal determination:
+
+```powershell
+python -m influencematch.import_data C:\path\to\permitted-creators.csv `
+  --destination data/active `
+  --source-name "Source title" `
+  --source-url "https://source.example/dataset" `
+  --license "CC-BY-4.0" `
+  --source-date 2025-01-31 `
+  --rights-confirmed
+```
+
+Imported files and the source data are local and git-ignored. The manifest records source name/URL/license, collection date, retrieval time, file hashes, record count, and an explicit `not independently verified` status. Do not use the sample values in the command as actual source metadata.
+
+## Run
+
+After selecting a brief and finding matches, use **Download ranked results and score traces (JSON)** to save the displayed recommendation records. The export includes the query, source attribution and license, source hashes, limitations, the original ranking evidence, and engagement-reference status. It is generated locally and contains only the imported records already used by the matcher.
+
+```powershell
+# Without imported data, these endpoints report unavailable; no fallback data is shown.
+uvicorn influencematch.api:app --reload
+streamlit run src/influencematch/dashboard.py --server.address 127.0.0.1
+```
+
+API docs: `http://127.0.0.1:8000/docs`; dashboard: `http://localhost:8501`. After importing, the verified Spark pipeline writes creator Parquet files and, when the source supplies post records, a post-level Reel Parquet table; it also copies the provenance manifest. By default the lake is stored outside OneDrive in `%LOCALAPPDATA%\InfluenceMatch\data-lake` on Windows. Spark overwrite failed inside this workspace’s OneDrive folder, so set `--lake` to a normal local-disk path if needed:
+
+```powershell
+python -m influencematch.pipeline --master "local[2]"
+python -m influencematch.db
+```
+
+PostgreSQL needs the Compose service running. The container maps to host port 55432 because a separate local PostgreSQL process owns port 5432. File-backed API/dashboard mode is the default and works on low-resource setups. To serve recommendations from the PostgreSQL snapshot instead, load the selected source and run:
+
+```powershell
+python -m influencematch.db
+$env:INFLUENCEMATCH_DATA_BACKEND = "postgres"
+$env:DATABASE_URL = "postgresql://influence:influence@localhost:55432/influence"
+# Terminal A:
+uvicorn influencematch.api:app --reload
+# Terminal B: set both environment variables above in this terminal too, then run:
+streamlit run src/influencematch/dashboard.py --server.address 127.0.0.1
+```
+
+The loader stores each full imported source record and its provenance manifest in PostgreSQL in a single transaction. PostgreSQL-backed API reads verify the source row counts and a canonical digest before making recommendations. `/match` responses carry source collection/retrieval metadata and imported creator/Reel file hashes; PostgreSQL results also carry the canonical database snapshot SHA-256. With PostgreSQL mode selected, `GET http://127.0.0.1:8000/analytics/summary` runs descriptive SQL for follower distributions, niche counts, source-metric coverage, and post topics/views/comments when Reel rows exist. The response includes the data source and marks approximate Reel metrics. The dashboard exposes the same SQL-backed summary in a collapsed panel when PostgreSQL mode is enabled; it compares the verified snapshot SHA-256 returned with recommendations to the summary query digest before displaying it. Summary queries are unavailable in file mode rather than returning simulated or stale statistics. Integration tests exercise actual RepOD or educational Reel rows, whichever source is selected in `data/active`.
+
+## Implemented and not implemented
+
+| Feature | State |
+|---|---|
+| Rights-attested CSV/JSONL importer with manifest and hashes | Implemented; source truth and permissions remain operator-declared |
+| API and UI unavailable-data state | Implemented; verified in tests |
+| TF-IDF/cosine ranking and present-field filters | Implemented for permitted bio/topic inputs; quality is unevaluated |
+| Recommendation score explanations | Implemented; TF-IDF results include per-term cosine contributions whose sum is checked against the score; RepOD includes observed judge-rating items, numerator, denominator, and mean, and excludes profiles without a score |
+| Download ranked results and score traces | Implemented; dashboard exports JSON with the actual query, dataset attribution/license and hashes, limitations, ranking evidence, and engagement reference; tested on both imported source datasets |
+| Zenodo educational Reels workbook importer with checksum-verified 300-post records | Implemented; actual 21-account, 300-Reel dataset, limited to education, no live metrics or likes |
+| RepOD checksum-verified ODS integration and niche match | Implemented; historical research benchmark with explicit limits |
+| Per-creator budget eligibility | Conditional importer/matcher path exists for complete source quotes, but no accepted real dataset supplies them; current datasets reject budget requests and success is not demonstrated with authentic quote data |
+| Engagement reference comparison | Implemented using the published CC BY quartiles in `data/reference/cheerful_engagement_benchmarks.json`; only compares source-provided normalized rates and follower counts, never imputes missing data or changes ranking |
+| PySpark creator and post-level Reel Parquet pipeline | Implemented; verifies provenance hashes, row counts, nonempty/unique IDs, and Reel-to-creator references before writing; verified on the 300 source Reel rows and 21 aggregated accounts, alongside the RepOD creator flow |
+| PostgreSQL creator and Reel loader plus API/dashboard backend | Implemented; replaces the prior active snapshot transactionally, checks source row counts and snapshot digest, and serves recommendations from actual database records |
+| PostgreSQL SQL analytics summary endpoint and dashboard panel | Implemented for loaded, provenance-verified snapshots; source-specific counts and distributions only, with approximate Reel metrics marked and no imputed values |
+| Post-level source ingestion and campaign outcomes | Implemented for the 300 licensed historical educational Reels only; no general/live Instagram ingestion or campaign-outcome data |
+| Evaluation and performance | RepOD descriptive rating association, same-sample NDCG@10, deterministic five-fold candidate-ranking stability diagnostic, Zenodo leave-one-Reel-out topic retrieval proxy, and repeatable local Spark timing are implemented; none is campaign-outcome validation |
+| Kafka, Airflow, MLflow, graph analytics | Optional/not implemented |
+| Meta/Instagram API integration | Not implemented; no credentials, reviewed app, scraping, or access-control bypass |
+
+## Tests and reproducibility
+
 ```powershell
 python -m pytest
+# Optional PostgreSQL integration test, after Compose reports the service healthy:
+$env:DATABASE_URL = "postgresql://influence:influence@localhost:55432/influence"
+python -m pytest tests/test_db.py -q
 ```
-*Expected Output: 7 passed tests verifying data generation, recommender monotonicity, and PySpark DataFrame cleaning.*
 
-### Step 5: Run Evaluation & Scalability Benchmarks (Optional)
-```powershell
-python -m src.evaluation
-```
-*Generates scaling charts, in-memory caching metrics, and scenario evaluations in `data/processed/evaluation_report.json`.*
+Tests cover API/dashboard unavailable behavior, provenance rejection, generic importer refusal without rights attestation, ETL refusal without provenance, RepOD checksum/schema import, Zenodo workbook checksum/schema and account aggregation, real API/dashboard matching on both licensed sources, budget-unavailable rejection on real datasets, multi-item source-rating evaluation, NDCG@10 same-sample ranking proxy, licensed engagement benchmark thresholds, Spark creator/Reel Parquet writes with integrity checks, and PostgreSQL creator/Reel loading, SQL summaries, plus database-backed recommendations on real source rows. The executed 321-row Zenodo Spark benchmark is in [zenodo_educational_reels_spark_benchmark.json](reports/zenodo_educational_reels_spark_benchmark.json). The optional PostgreSQL integration test is skipped unless `DATABASE_URL` is set; it checks loaded creator/Reel row counts, source null values, SQL summaries, and real recommendations from the configured database snapshot through both the API and Streamlit dashboard. Engagement context uses the source-published 2026 observation window, account counts, quartiles, definition, and CC BY 4.0 license; it is not treated as a predictive outcome or ranking feature. No fabricated influencer records are used. The Streamlit dashboard rendered and returned recommendations from the imported source in AppTest; it was also launched bound to `127.0.0.1`, where its health endpoint returned `ok` and its page returned HTTP 200. The importer stores source hashes and a provenance manifest; file-backed API state validates every declared creator and Reel artifact hash and row count, and Spark also validates source hashes and its ETL integrity checks before Parquet writes. Run `python -m influencematch.evaluate --data data/active --report reports/repod_evaluation.json` to reproduce the RepOD study-proxy analysis. For the educational Reel source, run `python -m influencematch.evaluate_tvorog --data data/active --report reports/zenodo_educational_reels_evaluation.json`. The verified report evaluates 300 held-out Reel topics against the same accounts remaining in the candidate set: TF-IDF retrieves the Reel author at Recall@5 0.867 and MRR 0.586, compared with follower-count baseline Recall@5 0.233 and MRR 0.175. This tests retrieval of one researcher's topic labels, not creator generalization or campaign effectiveness. Run `python -m influencematch.benchmark --repeat 2 --report reports/repod_spark_benchmark.json` to time Spark ETL on RepOD, or add `--raw data/active` after selecting the Zenodo dataset. On the current 392 records, Spearman rho between the six-item opinion-leadership composite and the two-item intention-to-recommend composite is 0.709 overall. Ranking quality is also reported as NDCG@10 against study intention-to-recommend ratings and compared with a follower-count baseline. The five-fold candidate-set diagnostic over the 257 profiles with all required ratings and follower counts produced mean NDCG@10 0.907 (population SD 0.113) for the opinion-leadership ranking and 0.380 (SD 0.078) for follower count. Folds are evaluation subsets only: no model is fitted, and both ranking signal and target are ratings from the same study. These are descriptive ranking-stability proxies, not independent validation, campaign prediction, or evidence of causality. Per-niche RepOD metrics and the exact input hash are in [repod_evaluation.json](reports/repod_evaluation.json); the educational Reel retrieval metrics are in [zenodo_educational_reels_evaluation.json](reports/zenodo_educational_reels_evaluation.json). No campaign outcomes are available.
 
-### Step 6: Launch the Streamlit Dashboard
-```powershell
-python -m streamlit run app.py
-```
-Open your browser to `http://localhost:8501`.
+## Costs and limits
 
----
-
-## 9. Dashboard Walkthrough (5 Modules)
-
-1. **🌐 Overview & Problem Statement:** Displays live catalog volume ($2,400+$ creators), niche diversity, average engagement rate ($3.4\%$), end-to-end architecture diagrams, and a 1-click button to pre-fill the Mumbai skincare scenario.
-2. **🎯 Find Influencers:** Campaign requirement form (niche, budget, min ER, follower range, city anchor, and configurable weights). Displays ranked cards with score pills, KPI metrics, mini score progress bars, and natural-language "Why Recommended?" justifications. Includes an export to CSV button.
-3. **⚖️ Compare Influencers:** Shortlist 2 to 4 creators to inspect side-by-side metric cards, a Plotly radar chart comparing multi-attribute footprints, and a decision verdict identifying the best creator for authentic engagement vs. ROI vs. maximum reach.
-4. **📊 Spark SQL Analytics:** 4 rich Plotly charts (niche performance bar chart, engagement decay curve across tiers, geographic creator density, cost vs. ER scatter plot) and an interactive Spark SQL console where users or examiners can write SQL queries and view execution times and Catalyst query execution plans (`EXPLAIN`).
-5. **🛡️ Data Quality & Architecture:** Educational breakdown of the 5 Vs of Big Data, academic explanation of local Spark vs. distributed clusters, PySpark ETL data quality audit, empirical in-memory caching benchmark ($1.86\times$ speedup), schema dictionary, and top 10 viva questions.
-
----
-
-## 10. Top 10 BDA Viva Questions & Answers
-
-### Q1: Why did you choose Apache Spark instead of just using Pandas?
-> **Answer:** Pandas executes strictly on a single thread and holds data in single-node RAM, leading to Out-Of-Memory (OOM) failures when datasets scale. Apache Spark provides distributed DataFrames that partition data across CPU cores and cluster nodes. Spark uses the Catalyst Optimizer to optimize execution plans, performs broadcast joins to eliminate expensive network shuffles, and provides lazy evaluation so transformations are only executed when an action is called.
-
-### Q2: What is Lazy Evaluation in Spark and how is it demonstrated in your code?
-> **Answer:** In Apache Spark, transformations (like `.filter()`, `.withColumn()`, `.groupBy()`) are lazy: they do not compute intermediate results immediately, but rather construct a Directed Acyclic Graph (DAG) of stages. Execution is only triggered when an action (like `.count()`, `.collect()`, or saving to Parquet) is called. In our evaluation benchmark (`src/evaluation.py`), defining a complex filtered transformation takes only $0.03\text{ seconds}$, whereas triggering `.collect()` takes $0.80\text{ seconds}$, confirming lazy evaluation in action.
-
-### Q3: What is the advantage of Apache Parquet over traditional CSV storage?
-> **Answer:** Parquet is an open-source columnar storage format with snappy compression. It offers two major Big Data optimizations:
-> 1. **Column Pruning:** If a Spark SQL query requests only `engagement_rate` and `followers_count`, Spark reads only those specific byte columns from disk, skipping all other columns.
-> 2. **Partition Pruning:** InfluenceIQ partitions Parquet files by `primary_niche`. When querying for 'Beauty & Skincare', Spark reads only that specific partition directory, completely bypassing the other 9 niche folders.
-> Additionally, Parquet provides $3\times$ to $5\times$ better compression ratios than raw CSV.
-
-### Q4: What is a Broadcast Join in PySpark and where is it used in InfluenceIQ?
-> **Answer:** In standard joins between two large DataFrames, Spark must perform a "Shuffle Hash Join" where records from both tables are hashed and transferred across network sockets to matching executors, which is computationally expensive. When joining a large dataset with a small reference table (like our `niche_benchmarks` table with only 10 rows), PySpark broadcasts the small table to every executor node using `broadcast(benchmarks_df)`. This avoids network shuffling entirely, reducing join latency.
-
-### Q5: How did you handle data cleaning and anomalies using PySpark?
-> **Answer:** In `src/data_cleaning.py`, we implemented:
-> 1. `dropDuplicates(["influencer_id"])` to remove duplicate creator records.
-> 2. `when().otherwise()` expressions to standardize inconsistent casing and spaces into canonical niche names.
-> 3. Imputation of null values using `.fillna()` / `when().isNull()` for optional fields like `secondary_niche` and `location_city`.
-> 4. Numeric constraint filtering to reject non-positive followers (`followers_count > 0`) and negative likes/comments.
-
-### Q6: What are the 5 Vs of Big Data and how does your project demonstrate them?
-> **Answer:**
-> - **Volume:** Managing thousands of creator profiles and engagement records partitioned by niche.
-> - **Velocity:** Batch ETL pipeline capable of processing over $1,000\text{ records/sec}$ on a laptop.
-> - **Variety:** Ingestion of structured CSVs, semi-structured JSON post metrics, and benchmark reference sets.
-> - **Veracity:** Data cleaning rules that eliminate duplicates, impute missing values, and standardize categories.
-> - **Value:** Transparent recommendation scoring that saves marketing budget and optimizes campaign ROI.
-
-### Q7: What are Spark Shuffle Partitions and why did you adjust them?
-> **Answer:** By default, Spark sets `spark.sql.shuffle.partitions` to `200`. For large multi-terabyte datasets, 200 partitions divide the work well. However, on a single local laptop machine, spawning 200 partition tasks introduces severe scheduling overhead and task context-switching. In `src/data_ingestion.py`, we tuned `spark.sql.shuffle.partitions` to `2` (matching local CPU executor cores), which dramatically speeds up aggregations and joins.
-
-### Q8: How does your recommendation scoring formula work?
-> **Answer:** It uses a normalized multi-criteria formula:
-> $$\text{Score} = (0.30 \cdot S_{\text{niche}} + 0.25 \cdot S_{\text{eng}} + 0.20 \cdot S_{\text{budget}} + 0.15 \cdot S_{\text{loc}} + 0.10 \cdot S_{\text{reach}}) \times 100$$
-> Each sub-score $S_i$ is normalized between $0.0$ and $1.0$. The weights are configurable by the business and automatically normalized to sum to $100\%$. The algorithm applies hard constraint filters first, and generates human-readable explanations (e.g. *'1.4x above niche benchmark ER'*).
-
-### Q9: What happens if no influencer satisfies all campaign requirements?
-> **Answer:** In real-world enterprise applications, returning a blank screen causes frustration. InfluenceIQ includes a graceful constraint relaxation fallback in `src/recommender.py`: if exact filtering yields zero results, it automatically relaxes the budget cap by $+30\%$ and the minimum engagement rate by $-1.0\%$. It presents the best near-miss candidates along with an explicit warning banner explaining that constraints were relaxed.
-
-### Q10: How does Spark in-memory caching improve performance?
-> **Answer:** When a DataFrame is queried multiple times in an application (for instance, filtering across multiple tabs), Spark re-executes the entire lineage graph from the source files each time. By calling `.cache()` or `.persist()`, Spark materializes the DataFrame in executor memory after the first action. Subsequent queries read directly from memory. In our benchmarks, caching provided a **$1.86\times$ speedup** over uncached execution.
-
----
-
-## 11. Limitations & Ethical Considerations
-
-1. **Synthetic Data Disclosure:** All influencer records, handles, follower counts, and metric numbers are generated synthetically using fixed random seeds for academic reproducibility. No private personal data or Instagram credentials were used or scraped.
-2. **Price Estimates Disclaimer:** Estimated sponsorship costs are modeled using Indian market industry CPM benchmarks (~₹150 to ₹450 per 1,000 followers adjusted for engagement rate). Actual creator rates vary depending on exclusivity, production value, and agency representation.
-3. **Single-Node Execution:** Spark executes in `local[*]` mode on a single laptop to demonstrate architectural concepts without requiring multi-node cloud clusters.
-
----
-
-## 12. Public Cloud Deployment Guide
-
-The repository includes pre-configured deployment manifests for both **Streamlit Community Cloud** and **Render** (via Docker).
-
-### Option A: Streamlit Community Cloud (Recommended · 100% Free · 1-Click)
-Streamlit Community Cloud natively supports Streamlit applications with stateful WebSockets, free hosting, and automatic rebuilds on `git push`.
-
-1. Go to [share.streamlit.io](https://share.streamlit.io) and click **Sign in with GitHub**.
-2. Click **New app**.
-3. Configure the three fields:
-   - **Repository:** `unnatikdm/frcrce_bda_project`
-   - **Branch:** `main`
-   - **Main file path:** `app.py`
-4. Click **Deploy!**
-> **Note:** The included `packages.txt` automatically installs `default-jre-headless` so PySpark initializes cleanly in the cloud container.
-
----
-
-### Option B: Render Deployment (Free Web Service via Docker)
-Render supports custom container deployments via the included `Dockerfile` and `render.yaml`.
-
-1. Go to [dashboard.render.com](https://dashboard.render.com) and sign in.
-2. Click **New +** > **Web Service**.
-3. Connect your GitHub repository: `https://github.com/unnatikdm/frcrce_bda_project`.
-4. Choose **Docker** as the runtime (Render will automatically detect `Dockerfile`).
-5. Select the **Free** instance tier.
-6. Click **Create Web Service**.
-7. Render will build the image with Java + Python 3.11, launch Streamlit, and generate your public HTTPS URL (e.g., `https://influenceiq.onrender.com`).
-
----
-
-### Option C: Vercel Deployment (Serverless Edge + Global CDN)
-The repository includes native Vercel configuration (`vercel.json`, `api/index.py` FastAPI serverless function, and `public/` responsive web app).
-
-1. Click the **[Deploy with Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Funnatikdm%2Ffrcrce_bda_project)** button or go to [vercel.com/new](https://vercel.com/new).
-2. Connect your GitHub account and import the repository: `unnatikdm/frcrce_bda_project`.
-3. Keep default settings (Vercel automatically detects `vercel.json` and static files in `public/`).
-4. Click **Deploy**.
-5. Your application will be live globally on Vercel's Edge network at:
-   $$\text{https://frcrce-bda-project.vercel.app}$$
+Software licenses used are permissive/open-source according to their upstream package metadata (FastAPI MIT, Streamlit Apache-2.0, scikit-learn BSD-3-Clause, PySpark Apache-2.0). Review transitive dependency licenses before redistribution. Software and local execution require no paid tier; network access is needed to install packages and pull container images. RepOD provides real historical records for local use. Spark-to-Parquet and PostgreSQL loading both ran against the imported source; campaign outcomes remain unavailable; model ranking quality has only a same-sample research-proxy analysis and must not be treated as campaign validation. The 392-row Spark timing report is explicitly a small local smoke benchmark, not large-cluster throughput: the latest recorded runs were 31.02 and 2.33 seconds, with 16.68 seconds median including Spark startup. The 321-row educational Reels run took 31.08 and 3.87 seconds, with 17.48 seconds median including startup. Both are local smoke timings and vary between runs. These datasets are too small to establish big-data-scale throughput; Spark demonstrates an authentic local ETL path, while larger-scale performance remains unverified.

@@ -1,0 +1,33 @@
+{
+  "benchmark_type": "local end-to-end Spark creator and optional Reel JSONL read, Parquet write, count, and manifest copy; includes Spark startup",
+  "not_representative_of_large_scale_cluster_throughput": true,
+  "source_name": "Educational Instagram Reels: Coded Dataset of 300 Reels from 21 Accounts",
+  "source_url": "https://doi.org/10.5281/zenodo.23301344",
+  "source_sha256": "00f7f2457f0bf686feeacaa3e1a766db532f0fd7054de49e2dabc1ccb36fe544",
+  "source_rows": 21,
+  "reels_sha256": "6c04a55928487f5ab15ec8b9c7daf375746aa8572b0dcc2c4e2b98c6ec753bdd",
+  "reel_rows": 300,
+  "host_platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.13.7",
+  "logical_cpus": 16,
+  "spark_master": "local[2]",
+  "iterations": [
+    {
+      "iteration": 1,
+      "creator_rows": 21,
+      "reel_rows": 300,
+      "total_rows_written": 321,
+      "wall_seconds": 31.08075500000041,
+      "total_rows_per_second_including_startup": 10.327934440459885
+    },
+    {
+      "iteration": 2,
+      "creator_rows": 21,
+      "reel_rows": 300,
+      "total_rows_written": 321,
+      "wall_seconds": 3.869364399999995,
+      "total_rows_per_second_including_startup": 82.95936149099848
+    }
+  ],
+  "median_wall_seconds": 17.4750597000002
+}
