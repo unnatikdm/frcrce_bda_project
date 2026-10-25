@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InfluenceMatch — Production Influencer Recommender</title>
+  <meta name="description" content="Authentic, explainable Big Data influencer recommendation system backed by verifiable provenance and judge-rated research data.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner container">
+      <div class="brand">
+        <svg class="brand-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36z"></path>
+        </svg>
+        <span class="brand-title">InfluenceMatch</span>
+        <span class="badge badge-subtle">v0.2.0</span>
+      </div>
+      <nav class="header-actions">
+        <div id="provenance-pill" class="status-pill status-loading">
+          <span class="status-indicator"></span>
+          <span id="provenance-label">Verifying Provenance...</span>
+        </div>
+        <a href="/docs" target="_blank" rel="noopener" class="btn btn-secondary btn-sm" id="btn-docs">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10"></path><path d="M6 10h10"></path></svg>
+          <span>API Docs</span>
+        </a>
+        <a href="https://github.com/unnatikdm/frcrce_bda_project" target="_blank" rel="noopener" class="btn btn-secondary btn-sm" id="btn-github">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          <span>GitHub</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content container">
+    <!-- Hero / Headline -->
+    <section class="hero-section">
+      <div class="hero-meta">
+        <span class="badge badge-primary">Big Data Analysis & Recommender System</span>
+      </div>
+      <h1 class="hero-title">Explainable Influencer Discovery Backed by Authentic Data</h1>
+      <p class="hero-subtitle">
+        Strict zero-synthetic architecture. All rankings and analytics are computed directly over verifiable, licensed research datasets with declared SHA-256 integrity checksums.
+      </p>
+    </section>
+
+    <!-- Scoped Big Data Analysis Section -->
+    <section class="section metrics-section">
+      <div class="section-header">
+        <h2 class="section-title">Big Data Analysis Overview</h2>
+        <span class="section-subtext" id="dataset-source-text">Loading dataset provenance...</span>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <span class="metric-label">Creators Observed</span>
+          <span class="metric-value" id="kpi-creators">—</span>
+          <span class="metric-footnote">Authentic profiles in active dataset</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Followers Observed</span>
+          <span class="metric-value" id="kpi-followers">—</span>
+          <span class="metric-footnote">Aggregated across active profiles</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Median Followers</span>
+          <span class="metric-value" id="kpi-median-followers">—</span>
+          <span class="metric-footnote">Nano & micro tier distribution</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Tracked Niches</span>
+          <span class="metric-value" id="kpi-niches">—</span>
+          <span class="metric-footnote">Coded categories in corpus</span>
+        </div>
+      </div>
+
+      <!-- Category Breakdown Bar -->
+      <div class="panel distribution-panel">
+        <div class="panel-header">
+          <h3 class="panel-title">Niche Category Distribution</h3>
+          <span class="panel-tag">Source Observations</span>
+        </div>
+        <div class="category-bars" id="category-bars">
+          <div class="skeleton-bar"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Live Recommendation Engine -->
+    <section class="section recommender-section">
+      <div class="section-header">
+        <h2 class="section-title">Campaign Matching Engine</h2>
+        <span class="section-subtext">TF-IDF cosine relevance & judge-rated opinion leadership</span>
+      </div>
+
+      <div class="panel match-panel">
+        <form id="match-form" class="match-form">
+          <div class="form-group">
+            <label for="brief-input" class="form-label">
+              Campaign Brief & Target Niches
+            </label>
+            <div class="input-with-button">
+              <input 
+                type="text" 
+                id="brief-input" 
+                name="brief"
+                class="form-input text-input" 
+                placeholder="e.g. fitness and lifestyle creators for summer campaign"
+                value="fitness and lifestyle creators"
+                required
+              >
+              <button type="submit" class="btn btn-primary" id="btn-submit-match">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <span>Find Matches</span>
+              </button>
+            </div>
+            <div class="preset-pills">
+              <span class="preset-label">Quick briefs:</span>
+              <button type="button" class="preset-pill" data-brief="fitness and lifestyle creators">Fitness & Lifestyle</button>
+              <button type="button" class="preset-pill" data-brief="beauty and lifestyle nano influencers">Beauty & Lifestyle</button>
+              <button type="button" class="preset-pill" data-brief="travel creators">Travel Creators</button>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group form-group-sm">
+              <label for="limit-select" class="form-label">Result Limit</label>
+              <select id="limit-select" class="form-input select-input">
+                <option value="5">Top 5</option>
+                <option value="10" selected>Top 10</option>
+                <option value="20">Top 20</option>
+                <option value="50">Top 50</option>
+              </select>
+            </div>
+
+            <div class="form-group form-group-sm">
+              <label for="min-followers" class="form-label">Min Followers</label>
+              <input type="number" id="min-followers" class="form-input" placeholder="e.g. 1000" min="0">
+            </div>
+
+            <div class="form-group form-group-sm">
+              <label for="max-followers" class="form-label">Max Followers</label>
+              <input type="number" id="max-followers" class="form-input" placeholder="e.g. 50000" min="0">
+            </div>
+          </div>
+        </form>
+
+        <!-- Match Results Output -->
+        <div id="match-results-container" class="match-results-container">
+          <div id="match-status-banner" class="status-banner" style="display: none;"></div>
+          <div id="match-results-list" class="results-grid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Creator Corpus Explorer -->
+    <section class="section explorer-section">
+      <div class="section-header">
+        <h2 class="section-title">Authentic Creator Corpus</h2>
+        <span class="section-subtext">Direct view of active profiles in research dataset</span>
+      </div>
+
+      <div class="panel explorer-panel">
+        <div class="explorer-toolbar">
+          <input 
+            type="text" 
+            id="explorer-search" 
+            class="form-input search-input" 
+            placeholder="Search creator ID, niche, or tier..."
+          >
+          <div class="toolbar-stats" id="explorer-count">
+            Showing all profiles
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table" id="creators-table">
+            <thead>
+              <tr>
+                <th>Creator ID</th>
+                <th>Observed Niche</th>
+                <th>Followers</th>
+                <th>Tier</th>
+                <th>Engagement Rate</th>
+                <th>Quality Score</th>
+                <th>Posts</th>
+              </tr>
+            </thead>
+            <tbody id="creators-tbody">
+              <tr>
+                <td colspan="7" class="td-loading">Loading authentic creator corpus...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-meta">
+        <span class="footer-title">InfluenceMatch</span>
+        <span class="footer-copy">Autonomous Big Data Instagram Recommender</span>
+      </div>
+      <div class="footer-provenance">
+        <span id="footer-license">License: CC-BY-4.0 · Dataset: RepOD KUW9CA</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

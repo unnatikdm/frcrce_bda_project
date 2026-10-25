@@ -1,0 +1,14 @@
+.git
+.venv
+.pytest_cache
+tests
+docker-compose*.yml
+data/source
+data/lake*
+data/smoke
+data/check
+data/repod_metadata.json
+data/active/repod_source.ods
+reports
+MASTER_PROMPT.md
+VERIFICATION_REPORT.md

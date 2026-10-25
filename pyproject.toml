@@ -7,13 +7,13 @@ dependencies = [
   "fastapi>=0.115,<1",
   "starlette>=0.46,<1",
   "uvicorn[standard]>=0.34,<1",
-  "streamlit>=1.42,<2",
-  "psycopg[binary]>=3.2,<4",
   "scikit-learn>=1.6,<2",
   "scipy>=1.12,<2",
 ]
 
 [project.optional-dependencies]
+dashboard = ["streamlit>=1.42,<2"]
+postgres = ["psycopg[binary]>=3.2,<4"]
 bigdata = ["pyspark>=4.0,<5"]
 repod = ["odfpy>=1.4,<2", "requests>=2.32,<3"]
 datasets = ["openpyxl>=3.1,<4", "requests>=2.32,<3"]

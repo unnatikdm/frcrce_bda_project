@@ -1,0 +1,25 @@
+{
+  "dataset_name": "Instagram engagement rate benchmarks",
+  "source_name": "Cheerful creator research",
+  "source_url": "https://www.cheerful.ai/research/instagram-engagement-benchmarks",
+  "license_id": "CC-BY-4.0",
+  "measurement_window": "2026-08-17/2026-09-06",
+  "source_sample_size": 5924,
+  "source_population_description": "One most recent observation per measured Instagram account with a non-null engagement rate and at least 1,000 followers, from the publisher's creator index.",
+  "rate_definition": "(average likes + average comments) / followers, expressed as percent",
+  "retrieved_at": "2026-10-18",
+  "follower_bands": [
+    {"min": 1000, "max_exclusive": 10000, "accounts": 2426, "p25_percent": 1.12, "median_percent": 2.60, "p75_percent": 5.60},
+    {"min": 10000, "max_exclusive": 50000, "accounts": 2403, "p25_percent": 0.65, "median_percent": 1.61, "p75_percent": 3.95},
+    {"min": 50000, "max_exclusive": 100000, "accounts": 496, "p25_percent": 0.47, "median_percent": 1.27, "p75_percent": 3.29},
+    {"min": 100000, "max_exclusive": 500000, "accounts": 487, "p25_percent": 0.28, "median_percent": 0.94, "p75_percent": 2.42},
+    {"min": 500000, "max_exclusive": 1000000, "accounts": 45, "p25_percent": 0.09, "median_percent": 0.23, "p75_percent": 1.20},
+    {"min": 1000000, "max_exclusive": null, "accounts": 67, "p25_percent": 0.12, "median_percent": 0.27, "p75_percent": 0.57}
+  ],
+  "limitations": [
+    "Publisher's creator index is not a census of Instagram accounts and over-represents accounts brands have searched for.",
+    "Accounts with hidden-like-count placeholder artifacts were excluded by the publisher.",
+    "Category quartiles are omitted from the project because the source labels are self-declared and are not a verified taxonomy.",
+    "Reference percentiles provide context only; they do not establish campaign effectiveness or determine recommendation rank."
+  ]
+}

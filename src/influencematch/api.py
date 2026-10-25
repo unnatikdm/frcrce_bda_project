@@ -4,13 +4,19 @@ import os
 from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field, model_validator
-import psycopg
-from .db import read_analytics_summary, read_dataset as read_postgres_dataset
+try:
+    import psycopg
+    from .db import read_analytics_summary, read_dataset as read_postgres_dataset
+except ImportError:
+    psycopg = None
+    read_analytics_summary = None
+    read_postgres_dataset = None
+
 from .matching import match
 from .provenance import provenance_fields_present, sha256_file
 from .engagement_context import engagement_context
 
-DATA = Path(os.getenv("DATA_DIR", "data")) / "active"
+DATA = Path(os.getenv("DATA_DIR", Path(__file__).resolve().parent.parent.parent / "data")) / "active"
 app = FastAPI(title="InfluenceMatch Local API", version="0.2.0", description="Uses only user-supplied data with declared provenance")
 class Brief(BaseModel):
     brief: str = Field(min_length=1, max_length=1000)
@@ -36,6 +42,8 @@ class Brief(BaseModel):
 def dataset_state():
     backend = os.environ.get("INFLUENCEMATCH_DATA_BACKEND", "files").strip().casefold()
     if backend == "postgres":
+        if psycopg is None or read_postgres_dataset is None:
+            return None, {"status": "backend_unavailable", "reason": "PostgreSQL driver psycopg is not installed.", "profiles_loaded": 0, "backend": "postgres"}
         try:
             profiles, manifest = read_postgres_dataset()
         except ValueError as exc:
@@ -100,6 +108,8 @@ def dataset(): return dataset_state()[1]
 def analytics_summary():
     if os.environ.get("INFLUENCEMATCH_DATA_BACKEND", "files").strip().casefold() != "postgres":
         raise HTTPException(status_code=409, detail="SQL summaries require INFLUENCEMATCH_DATA_BACKEND=postgres and a loaded PostgreSQL snapshot.")
+    if read_analytics_summary is None or psycopg is None:
+        raise HTTPException(status_code=503, detail="PostgreSQL analytics driver is not installed.")
     try:
         return read_analytics_summary()
     except ValueError as exc:

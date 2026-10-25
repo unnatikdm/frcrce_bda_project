@@ -1,0 +1,72 @@
+{
+  "dataset_name": "Judge-rated dataset of nano- and micro-influencers",
+  "dataset_key": "repod_kuw9ca",
+  "source_url": "https://repod.icm.edu.pl/dataset.xhtml?persistentId=doi%3A10.18150%2FKUW9CA",
+  "license_id": "CC-BY-4.0",
+  "source_collection_date": "Not disclosed; source describes a three-month observation period",
+  "retrieved_at_utc": "2026-10-18T16:26:13.535588+00:00",
+  "source_file_md5": "a51bf1ea9b2caf6094bb4977a5411047",
+  "source_file_sha256": "2875a001d230471c3cd8674c7483f2ba8e8fe5dd286363c638b2fc70345caf77",
+  "imported_file": "creators.jsonl",
+  "record_count": 392,
+  "source_observation_count": 393,
+  "excluded_missing_creator_identifier": 1,
+  "source_formula_error_cells": {
+    "Aver_median_income": 1
+  },
+  "source_metric_non_null_counts": {
+    "engagement_rate_source_value": 392,
+    "average_comments_per_post": 392,
+    "average_likes_per_post": 392,
+    "audience_quality_score": 392,
+    "compensation_source_value": 391,
+    "number_posts": 384
+  },
+  "research_rating_components": {
+    "opinion_leadership": [
+      "OpinionLeadership_modelforothers_a",
+      "OpinionLeadership_stepahead_a",
+      "OpinionLeadership_picturesnewideas_a",
+      "OpinionLeadership_persuadespeople_a",
+      "OpinionLeadership_inluencespeople_a",
+      "OpinionLeadership_sourceofinformation_a"
+    ],
+    "authenticity": [
+      "Authenticity_genuine_a",
+      "Authenticity_seemsreal_a",
+      "Authenticity_authentic_a"
+    ],
+    "inspiration": [
+      "Inspiration_inspires_a",
+      "Inspiration_stimulatesthinking_a",
+      "Inspiration_givesnewideas_a"
+    ],
+    "content_expertise": [
+      "ContentsExpertise_contentsexpertise_a",
+      "ContentsExpertise_interestingissues_a",
+      "ContentsExpertise_knowledge_a"
+    ],
+    "intention_recommendation": [
+      "IntentionRecommend_sendinginformationtopeople_a",
+      "IntentionRecommend_likelyrecommend_a"
+    ]
+  },
+  "research_rating_non_null_profile_counts": {
+    "opinion_leadership": 392,
+    "authenticity": 392,
+    "inspiration": 392,
+    "content_expertise": 392,
+    "intention_recommendation": 392
+  },
+  "rights_attestation": "Source file is explicitly CC BY 4.0; attribution required.",
+  "data_status": "licensed_research_data; observations are historical and dates not disclosed",
+  "attribution": "Korzyński, Paweł; Protsiuk, Olga (2026), RepOD, DOI 10.18150/KUW9CA",
+  "limitations": [
+    "No bios or post text",
+    "Exact observation dates are not disclosed",
+    "No current metrics or campaign outcomes",
+    "Engagement-rate scale and compensation currency are unspecified; preserved values are not used for filtering",
+    "TSV file checksum differs from repository metadata; verified ODS version used"
+  ],
+  "imported_file_sha256": "94338a9aa29d7357f3c507d0058d031d4c4f7ff9b152223c0709847d552386f4"
+}
